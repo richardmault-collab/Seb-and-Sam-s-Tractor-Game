@@ -81,7 +81,7 @@ for (let round = 0; round < 6; round++) {
   click({do: 'play-guess'});
   click({do: 'play-guess'});
   const guessedSound=recordedPlays[recordedPlays.length-1];
-  assert(guessedSound && /^sounds\/(cow|sheep|pig|chicken|tractor)\.ogg$/.test(guessedSound),
+  assert(guessedSound && /^sounds\/(cow|sheep|pig|chicken|tractor)(?:_2)?\.ogg$/.test(guessedSound),
     'Actual bundled farm recording plays, never a robotic spoken imitation');
   let correct = null;
   for (const key of optionKeys) {
@@ -106,7 +106,7 @@ assert.equal((ids.gameArea.innerHTML.match(/data-guess-option=/g) || []).length,
 click({activity: 'animals'});
 assert(ids.gameArea.innerHTML.includes('data-animal="cow"'));
 click({animal: 'cow'});
-assert(recordedPlays.includes('sounds/cow.ogg'), 'Animal tap plays a recorded cow');
+assert(recordedPlays.some(s=>/^sounds\/cow(?:_2)?\.ogg$/.test(s)), 'Animal tap plays a recorded cow');
 
 click({activity: 'colours'});
 assert(ids.gameArea.innerHTML.includes('data-colour="RED"'));
@@ -125,15 +125,15 @@ assert(recordedPlays.includes('sounds/hay.ogg'), 'Loading hay uses a physical fo
 click({activity: 'drive'});
 for (let i = 0; i < 4; i++) click({do: 'drive'});
 advance(2300);
-assert(recordedPlays.includes('sounds/tractor.ogg'), 'Driving plays a tractor engine recording');
+assert(recordedPlays.some(s=>/^sounds\/tractor(?:_2)?\.ogg$/.test(s)), 'Driving plays a tractor engine recording');
 click({activity: 'peek'});
 click({do: 'peek'}); click({do: 'peek'});
 assert(window.goHome(), 'Can return home');
 assert(!window.goHome(), 'Can exit home');
 // Verify the real audio assets will be packed into the APK.
-for (const id of ['cow', 'sheep', 'pig', 'chicken', 'tractor', 'horn', 'water', 'seed', 'hay']) {
+for (const id of ['cow', 'sheep', 'pig', 'chicken', 'tractor', 'horn', 'water', 'seed', 'hay', 'cow_2', 'sheep_2', 'pig_2', 'chicken_2', 'tractor_2']) {
   const filename=path.join(__dirname, '../app/src/main/assets/sounds', id+'.ogg');
   assert(fs.statSync(filename).size > 500, 'Missing authentic recording: '+id);
   assert.equal(fs.readFileSync(filename).subarray(0,4).toString(), 'OggS', 'Invalid Ogg recording: '+id);
 }
-console.log('PASS: 8 activities, animal/tractor recordings, nine offline Ogg assets and counting 1–5');
+console.log('PASS: 8 activities, animal/tractor recordings, fourteen offline Ogg assets and counting 1–5');

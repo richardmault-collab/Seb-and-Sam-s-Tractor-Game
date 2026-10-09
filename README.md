@@ -2,13 +2,20 @@
 
 An offline, ad-free Android farming game made for Seb (3) and Sam (1), with animated cartoon characters inspired by their photo.
 
-## New in v1.2: Real farm audio
+## Earlier v1.2: Real farm audio
 
 The animal noises now come from **real cows, sheep, pigs and chickens**, and the tractor comes from a **real working tractor recording**. Farm tasks use physical water, earth and rustling sound effects too. There are no longer robotic voices pretending to say animal noises. Audio works entirely offline, including Guess the Farm Sound. Music and narration are separate from the realistic recordings; the app still speaks numbers and simple praise to help learning. Read [SOUND_CREDITS.md](SOUND_CREDITS.md) for source recordings and licences.
 
 **Play**: Animal taps and sounds, **Guess the Farm Sound** (hear a cow, sheep, pig, chicken or tractor, then choose from exactly three pictures), a tractor drive, barn peekaboo, counting sheep from 1 to 5, matching coloured tractors, planting seeds, and delivering hay.
 
 **Guess the Farm Sound** works in both Sam and Seb modes. Tap the big speaker as often as you like, choose one of three pictures, and get positive encouragement. Correct answers celebrate and unlock another sound; wrong answers gently encourage trying again. The background music pauses during this listening game. Turn on sound effects (🔊) in the top bar to hear the sounds.
+
+## New in v1.3: Redesigned farm and more varied sounds
+
+- Real gameplay screens now use **wooden farm signs, glossy colour-coded buttons, an illustrated barn, windmill and meadow, bigger tap targets, and rounded animal artwork** rather than simple emoji-only tiles.
+- Seb and Sam's in-game animated cartoon characters have been refined using the original reference photo (including Seb's brown-blond fringe and Sam's lighter hair and blue eyes). These remain hand-drawn cartoons, **not** the fully rendered marketing mockups; the original family photo is not in the repository.
+- In Guess the Farm Sound, Animal Sounds, and Tractor Drive, repeated taps now rotate between **two genuine recorded takes**. The game contains fourteen offline sound files (original Ogg files plus additional WAV animal calls). Background music still pauses during sound guessing.
+- Counting remains limited to **1–5**. All eight mini-games remain available for Seb and four for Sam.
 
 ## Get the Android app
 

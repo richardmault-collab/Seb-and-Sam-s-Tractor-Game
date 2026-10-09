@@ -35,6 +35,7 @@ p2=$(printf '%s' "$hex" | cut -c1-2)
 tractor_url="https://upload.wikimedia.org/wikipedia/commons/$p1/$p2/$TRACTOR_FILE"
 curl -fL --retry 3 --connect-timeout 20 -A "SebSamTractorFarm/1.2 (family educational game)" -sS "$tractor_url" -o "$work/tractor.ogg"
 ffprobe -v error "$work/tractor.ogg" >/dev/null
+cp "$work/tractor.ogg" "$work/tractor_2.ogg"
 
 encode() {
   local key="$1" start="$2" duration="$3" src_ext="$4"

@@ -20,7 +20,7 @@
   var recordingCache = {};
   var activeRecordings = {};
   var recordingRounds = {};
-  var recordedAlternates = { cow: true, sheep: true, pig: true, chicken: true, tractor: true };
+  var recordedAlternates = { cow: true, sheep: true, pig: true, chicken: true, tractor: true, horse: true, duck: true, goat: true, dog: true, cat: true };
   var realEffects = { horn: "horn", engine: "tractor", water: "water", seed: "seed", hay: "hay" };
   function playRecording(key) {
     if (!sounds || paused) return false;
@@ -63,7 +63,12 @@
     { key: "cow", name: "Cow", emoji: "🐄", say: "Moooo! Cow!", colour: "tint-blue" },
     { key: "sheep", name: "Sheep", emoji: "🐑", say: "Baaaa! Sheep!", colour: "tint-green" },
     { key: "pig", name: "Pig", emoji: "🐖", say: "Oink oink! Pig!", colour: "tint-pink" },
-    { key: "chicken", name: "Chicken", emoji: "🐔", say: "Cluck cluck! Chicken!", colour: "tint-yellow" }
+    { key: "chicken", name: "Chicken", emoji: "🐔", colour: "tint-yellow" },
+    { key: "horse", name: "Pony", emoji: "🐴", colour: "tint-blue" },
+    { key: "duck", name: "Duck", emoji: "🦆", colour: "tint-green" },
+    { key: "goat", name: "Goat", emoji: "🐐", colour: "tint-yellow" },
+    { key: "dog", name: "Dog", emoji: "🐕", colour: "tint-pink" },
+    { key: "cat", name: "Cat", emoji: "🐈", colour: "tint-purple" }
   ];
   var colours = [
     { name: "RED", hex: "#e9352e" },
@@ -72,10 +77,10 @@
     { name: "YELLOW", hex: "#f0bd26" }
   ];
   var games = {
-    animals: { title: "Tap the Animals", short: "Animal Sounds", icon: "🐄", tint: "tint-green", sub: "Listen and learn" },
-    guess: { title: "Guess the Farm Sound", short: "Guess the Sound", icon: "🔊", tint: "tint-blue", sub: "Listen and choose a picture" },
-    drive: { title: "Drive the Tractor", short: "Tractor Time", icon: "🚜", tint: "tint-yellow", sub: "Brrrm! Beep beep!" },
-    peek: { title: "Who's in the Barn?", short: "Barn Peekaboo", icon: "🏠", tint: "tint-pink", sub: "What will you find?" },
+    animals: { title: "Explore the Farm", short: "Explore the Farm", icon: "🐄", tint: "tint-green", sub: "Meet the animals and machines" },
+    guess: { title: "Guess the Farm Sound", short: "Guess the Sound", icon: "🐄", tint: "tint-blue", sub: "Listen and choose a picture" },
+    drive: { title: "Get Ready to Drive", short: "Farm Jobs", icon: "🚜", tint: "tint-yellow", sub: "Five jobs to get to the field" },
+    peek: { title: "Find the Farm Animals", short: "Find the Animals", icon: "🏡", tint: "tint-pink", sub: "Search the barn, field and yard" },
     count: { title: "Count the Sheep", short: "Count to Five", icon: "🐑", tint: "tint-blue", sub: "One, two, three, four, five" },
     colours: { title: "Tractor Colours", short: "Tractor Colours", icon: "🚜", tint: "tint-purple", sub: "Find the right colour" },
     plant: { title: "Plant the Seeds", short: "Grow a Garden", icon: "🌻", tint: "tint-mint", sub: "Seeds, water and sunshine" },
@@ -83,7 +88,12 @@
   };
   var farmSounds = animalList.map(function(a) {
     return { key: a.key, name: a.name, emoji: a.emoji, colour: a.colour };
-  }).concat([{ key: "tractor", name: "Tractor", emoji: "🚜", colour: "tint-yellow" }]);
+  }).concat([
+    { key: "tractor", name: "Tractor", emoji: "🚜", colour: "tint-yellow" },
+    { key: "combine", name: "Combine", emoji: "🌾", colour: "tint-yellow" },
+    { key: "digger", name: "Digger", emoji: "🚧", colour: "tint-blue" },
+    { key: "loader", name: "Loader", emoji: "🏗️", colour: "tint-mint" }
+  ]);
   var lists = {
     sam: ["animals", "guess", "drive", "peek"],
     seb: ["guess", "count", "colours", "plant", "hay", "animals", "drive", "peek"]
@@ -144,7 +154,7 @@
     else if (kind === "wrong") { note(250,.14,.065,"sine"); }
   }
   function animalNoise(key) {
-    if (key === "cow" || key === "sheep" || key === "pig" || key === "chicken") {
+    if (animalList.some(function(a){return a.key===key;})) {
       // Never say "moo" or "baa" with text-to-speech: play the real animal.
       playRecording(key);
     }
@@ -211,7 +221,7 @@
   function esc(s) {return String(s).replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch];});}
   function renderHome() {
     clearTimeout(nextRoundTimer);stopRecordedSounds();current="home";syncMusic();homeButton.hidden=true;
-    var heading='<div class="home-sign"><h1><span class="seb-text">Seb</span><span class="amp-text"> & </span><span class="sam-text">Sam’s</span></h1><p>TRACTOR FARM</p></div>';
+    var heading='<div class="home-sign"><h1>Seb &amp; Sam’s</h1><p>🚜 TRACTOR FARM 🚜</p></div>';
     var illustration='<div class="hero-wrap"><div class="hero-farm-scene"></div>'+document.getElementById("tractorTemplate").innerHTML+'<span class="hero-sticker hero-sticker-a">🌻</span><span class="hero-sticker hero-sticker-b">🐄</span></div>';
     var tabs='<p class="home-intro">WHO IS PLAYING TODAY?</p><div class="mode-picker" role="group" aria-label="Choose player">'+
       '<button data-player="sam" class="mode-option '+(selection==="sam"?"active":"")+'">👶 Sam <span class="age">Little farmer · 1+</span></button>'+
@@ -228,7 +238,10 @@
     clearTimeout(nextRoundTimer);stopRecordedSounds();current=id;state={};syncMusic();
     homeButton.hidden=false;
     main.innerHTML='<div class="game-heading"><h1>'+games[id].icon+" "+esc(games[id].title)+'</h1><p>'+esc(games[id].sub)+'</p></div><div id="gameArea" class="play-panel theme-'+id+'"></div>';
-    if (id==="animals") drawAnimals();
+    if (["animals","drive","peek","hay"].indexOf(id)>=0 && window.FarmV14) {
+      window.FarmV14.start(id,{player:selection,play:playRecording,art:farmArt,tractor:tractorSVG,fx:fx,say:say,
+        celebrate:celebrate,message:message,area:area});
+    } else if (id==="animals") drawAnimals();
     else if (id==="guess") newSoundRound();
     else if (id==="drive") {state.progress=0;drawDrive();}
     else if (id==="peek") {state.open=false;state.pick=0;drawPeek();}
@@ -276,7 +289,8 @@
       '<path d="M61 55L43 68L61 79L79 68Z" fill="#ffd63e" stroke="#dfa01d" stroke-width="3"/>'+
       '<path d="M62 84Q52 101 67 110Q80 104 73 86" fill="#e44e41"/></svg>';
     if(key==="tractor") return tractorSVG("#ed3730").replace("mini-tractor","farm-icon-svg");
-    return '<span>'+key+'</span>';
+    var other = {horse:"🐴",duck:"🦆",goat:"🐐",dog:"🐕",cat:"🐈",combine:"🚜",digger:"🚧",loader:"🏗️"};
+    return '<span class="farm-large-emoji" aria-hidden="true">'+(other[key]||"🌱")+'</span>';
   }
   function drawAnimals() {
     area('<div class="bubble">Tap an animal to hear its sound!</div><div class="animal-grid">'+animalList.map(function(a){
@@ -326,7 +340,8 @@
       return;
     }
     if (state.answer === "tractor") { fx("engine"); return; }
-    // A real sound is the ONLY clue: do not read out or imitate its name.
+    // Real recorded sounds are the only clues.
+    if (["combine","digger","loader"].indexOf(state.answer)>=0) { playRecording(state.answer); return; }
     animalNoise(state.answer);
   }
   function chooseSoundPicture(key, button) {

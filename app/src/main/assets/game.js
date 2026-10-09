@@ -15,6 +15,40 @@
   var audioContext = null;
   var musicTimer = null;
   var musicStep = 0;
+  // Reusable local Ogg files: real animal and farm machinery recordings.
+  // Bundled inside the APK (file:///android_asset/sounds/), never streamed.
+  var recordingCache = {};
+  var activeRecordings = {};
+  var realEffects = { horn: "horn", engine: "tractor", water: "water", seed: "seed", hay: "hay" };
+  function playRecording(key) {
+    if (!sounds || paused) return false;
+    try {
+      // Restart a sound when tapped again; this keeps guessing rounds responsive.
+      var clip = recordingCache[key];
+      if (!clip) {
+        clip = new Audio("sounds/" + key + ".ogg");
+        clip.preload = "auto";
+        clip.volume = key === "horn" ? 0.68 : 0.85;
+        recordingCache[key] = clip;
+      }
+      clip.pause();
+      clip.currentTime = 0;
+      var playing = clip.play();
+      if (playing && typeof playing.catch === "function") {
+        playing.catch(function () { message("Could not play sound. Please try again."); });
+      }
+      activeRecordings[key] = clip;
+      return true;
+    } catch (_) {
+      message("Could not play sound. Please try again.");
+      return false;
+    }
+  }
+  function stopRecordedSounds() {
+    Object.keys(activeRecordings).forEach(function(key) {
+      try { activeRecordings[key].pause(); activeRecordings[key].currentTime = 0; } catch (_) {}
+    });
+  }
   var paused = false;
   var sounds = loadPref("sounds", true);
   var music = loadPref("music", true);
@@ -92,6 +126,7 @@
   }
   function fx(kind) {
     if (!sounds || paused) return;
+    if (realEffects[kind]) { playRecording(realEffects[kind]); return; }
     startAudio();
     if (kind === "tap") { note(620,.09,.11,"sine"); }
     else if (kind === "success") { note(523,.2,.13,"triangle");note(659,.2,.13,"triangle",.16);note(784,.35,.13,"triangle",.32); }
@@ -102,12 +137,10 @@
     else if (kind === "wrong") { note(250,.14,.065,"sine"); }
   }
   function animalNoise(key) {
-    if (!sounds || paused) return;
-    startAudio();
-    if (key === "cow") { slide(180,90,.7,.21,"sawtooth"); }
-    if (key === "sheep") { slide(365,225,.34,.17,"sawtooth");setTimeout(function(){slide(355,200,.33,.17,"sawtooth");},170); }
-    if (key === "pig") {slide(200,300,.14,.17,"square");setTimeout(function(){slide(190,260,.15,.17,"square");},180);}
-    if (key === "chicken") {note(640,.08,.16,"square");note(780,.09,.16,"square",.10);note(530,.1,.13,"square",.23);}
+    if (key === "cow" || key === "sheep" || key === "pig" || key === "chicken") {
+      // Never say "moo" or "baa" with text-to-speech: play the real animal.
+      playRecording(key);
+    }
   }
   function say(words) {
     if (!sounds || paused) return;
@@ -170,7 +203,7 @@
   }
   function esc(s) {return String(s).replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch];});}
   function renderHome() {
-    clearTimeout(nextRoundTimer);current="home";syncMusic();homeButton.hidden=true;
+    clearTimeout(nextRoundTimer);stopRecordedSounds();current="home";syncMusic();homeButton.hidden=true;
     var heading='<div class="home-sign"><h1>Seb & Sam’s</h1><p>🚜 TRACTOR FARM 🚜</p></div>';
     var illustration='<div class="hero-wrap">'+document.getElementById("tractorTemplate").innerHTML+'</div>';
     var tabs='<p class="home-intro">Who is playing today?</p><div class="mode-picker" role="group" aria-label="Choose player">'+
@@ -185,7 +218,7 @@
   }
   function renderGame(id) {
     if (!games[id]) return;
-    clearTimeout(nextRoundTimer);current=id;state={};syncMusic();
+    clearTimeout(nextRoundTimer);stopRecordedSounds();current=id;state={};syncMusic();
     homeButton.hidden=false;
     main.innerHTML='<div class="game-heading"><h1>'+games[id].icon+" "+esc(games[id].title)+'</h1><p>'+esc(games[id].sub)+'</p></div><div id="gameArea" class="play-panel"></div>';
     if (id==="animals") drawAnimals();
@@ -246,15 +279,9 @@
       message("Switch on the 🔊 sound button first!");
       return;
     }
-    if (state.answer === "tractor") {
-      fx("engine");
-      // A short tractor horn distinguishes the engine from animal noises.
-      setTimeout(function(){if(current==="guess" && state.answer==="tractor" && !state.solved)fx("horn");},450);
-      return;
-    }
+    if (state.answer === "tractor") { fx("engine"); return; }
+    // A real sound is the ONLY clue: do not read out or imitate its name.
     animalNoise(state.answer);
-    var calls={cow:"Mooooooo",sheep:"Baaaaaaa",pig:"Oink oink",chicken:"Cluck cluck"};
-    say(calls[state.answer]);
   }
   function chooseSoundPicture(key, button) {
     if (current !== "guess" || state.solved) return;
@@ -314,12 +341,12 @@
   function tapAnimal(key, button) {
     var animal=animalList.find(function(a){return a.key===key;});
     if(!animal)return;
-    animalNoise(key);say(animal.say);message(animal.emoji+" "+animal.name+"!");
+    animalNoise(key);message(animal.emoji+" "+animal.name+"!");
     if(button){button.classList.remove("jiggle");void button.offsetWidth;button.classList.add("jiggle");}
   }
   function doAction(which, button) {
     if(which==="play-guess"){playGuessSound();return;}
-    if(which==="horn"){fx("horn");say("Beep beep!");return;}
+    if(which==="horn"){fx("horn");return;}
     if(which==="drive"){
       state.progress++;fx("engine");drawDrive();
       if(state.progress>=4){celebrate("Great driving! Beep beep!");delay(function(){state.progress=0;drawDrive();},2300);}
@@ -330,12 +357,12 @@
       else {state.open=false;drawPeek();fx("tap");}return;
     }
     if(which==="plant"){
-      if(state.stage<3){state.stage++;fx(state.stage===2?"water":"seed");drawPlant();say(["","Seed planted!","Splash splash! Water!","Sunshine makes plants grow!"][state.stage]);}
+      if(state.stage<3){state.stage++;fx(state.stage===2?"water":"seed");drawPlant();say(["","Seed planted!","Water helps plants grow!","Sunshine makes plants grow!"][state.stage]);}
       else {celebrate("You grew a lovely crop!");delay(function(){state.crop++;state.stage=0;drawPlant();},2200);}
       return;
     }
     if(which==="load"){
-      if(state.loaded<3){state.loaded++;fx("seed");drawHay();say(String(state.loaded));}
+      if(state.loaded<3){state.loaded++;fx("hay");drawHay();say(String(state.loaded));}
       return;
     }
     if(which==="deliver"){
@@ -381,10 +408,10 @@
     if(button.dataset.do){doAction(button.dataset.do,button);return;}
   });
   homeButton.addEventListener("click",function(){fx("tap");renderHome();});
-  soundButton.addEventListener("click",function(){sounds=!sounds;savePref("sounds",sounds);syncMusic();fx("tap");});
+  soundButton.addEventListener("click",function(){sounds=!sounds;if(!sounds)stopRecordedSounds();savePref("sounds",sounds);syncMusic();fx("tap");});
   musicButton.addEventListener("click",function(){music=!music;savePref("music",music);startAudio();syncMusic();});
   window.goHome=function(){if(current!=="home"){renderHome();return true;}return false;};
-  window.setAppPaused=function(isPaused){paused=!!isPaused;if(paused){try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(_){};}syncMusic();};
+  window.setAppPaused=function(isPaused){paused=!!isPaused;if(paused){stopRecordedSounds();try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(_){};}syncMusic();};
   document.addEventListener("visibilitychange",function(){window.setAppPaused(document.hidden);});
   renderHome();syncMusic();
 })();

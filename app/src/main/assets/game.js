@@ -232,7 +232,7 @@
       return '<button class="game-card '+g.tint+'" data-activity="'+id+'" aria-label="'+esc(g.title)+'"><span class="pic" aria-hidden="true">'+g.icon+'</span><span class="card-copy"><strong>'+esc(g.short)+'</strong><span class="sub">'+esc(g.sub)+'</span></span><span class="card-arrow" aria-hidden="true">➜</span></button>';
     }).join("")+'</div>';
     main.innerHTML=heading+illustration+tabs+'<div class="game-picker-title">🌾 Pick a farm adventure! 🌾</div>'+grid+'<p class="parent-note">Made with love ❤️ No adverts · No timers · Play offline</p>';
-    main.scrollIntoView({block:"start",behavior:"auto"});
+    if (typeof window.scrollTo === "function") window.scrollTo(0,0);
   }
   function renderGame(id) {
     if (!games[id]) return;
@@ -250,7 +250,7 @@
     else if (id==="colours") {state.target=0;drawColours();}
     else if (id==="plant") {state.stage=0;state.crop=0;drawPlant();}
     else if (id==="hay") {state.loaded=0;state.delivered=false;drawHay();}
-    main.scrollIntoView({block:"start",behavior:"auto"});
+    if (typeof window.scrollTo === "function") window.scrollTo(0,0);
   }
   function area(html) {var node=document.getElementById("gameArea");if(node) node.innerHTML=html;}
 

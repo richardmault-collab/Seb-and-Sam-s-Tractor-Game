@@ -1,0 +1,62 @@
+
+:root{--ink:#4a3429;--cream:#fff4d8;--grass:#75cf58;--orange:#ffc15b;--shadow:0 7px 0 rgba(104,69,37,.18),0 12px 24px rgba(71,108,58,.16)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;width:100%;overflow-x:hidden}
+body{font-family:Trebuchet MS,Arial Rounded MT Bold,system-ui,sans-serif;color:var(--ink);background:#78d8fc;-webkit-tap-highlight-color:transparent;user-select:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation;border:0;color:inherit}button:focus-visible{outline:5px solid #2a75df;outline-offset:4px}
+.app{position:relative;min-height:100dvh;padding:env(safe-area-inset-top) 14px calc(70px + env(safe-area-inset-bottom));overflow:hidden;background:linear-gradient(180deg,#78d8ff 0,#bdf2ff 40%,#d1f4a2 41%,#8bd75d 68%,#61bf53 100%)}
+.app:before{content:"";position:absolute;z-index:0;top:30%;left:-25%;width:150%;height:350px;border-radius:50% 50% 0 0;background:#a8e978;pointer-events:none}
+.app:after{content:"";position:absolute;z-index:0;top:55%;left:-20%;width:150%;height:280px;border-radius:50% 50% 0 0;background:#81d362;pointer-events:none}
+.sky-cloud{position:absolute;top:83px;width:110px;height:28px;border-radius:60px;background:rgba(255,255,255,.9);box-shadow:20px -18px 0 10px #fff,55px -8px 0 6px #fff;z-index:0;animation:float-cloud 11s ease-in-out infinite alternate;pointer-events:none}
+.cloud-one{left:-20px}.cloud-two{left:auto;right:5px;top:170px;transform:scale(.8);animation-duration:15s}
+.sun{position:absolute;right:9%;top:125px;font-size:57px;animation:twirl 30s linear infinite;pointer-events:none}
+.topbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:7px;max-width:720px;margin:0 auto;padding:12px 0 5px}
+.brand{font-size:clamp(17px,4.4vw,25px);font-weight:1000;color:#fffef1;text-shadow:2px 3px 0 #9a572e,0 0 15px #704e2b;white-space:nowrap}
+.brand span{font-size:.8em}.round-btn{height:43px;width:43px;display:inline-grid;place-items:center;border-radius:50%;background:#fff9df;border:3px solid #fff;box-shadow:0 5px 0 #bb9850;font-size:20px;transition:transform .15s}
+.round-btn:active{transform:translateY(4px)}.sound-controls{display:flex;gap:7px}.round-btn.off{filter:grayscale(1);opacity:.65}.back-btn{font-size:30px;flex-shrink:0;background:#ffeab6}
+main{position:relative;z-index:2;max-width:720px;margin:0 auto}.home-sign{margin:7px auto 4px;max-width:560px;width:97%;text-align:center;color:#fffcef;border:7px solid #ffe7a7;border-radius:26px;box-shadow:0 9px 0 #844e20,0 14px 30px rgba(65,100,30,.23);background:repeating-linear-gradient(0deg,#b46c36 0px,#b46c36 18px,#bd7b45 19px,#b8753d 32px)}
+.home-sign h1{font-size:clamp(29px,8vw,52px);margin:7px 0 3px;line-height:1.05;color:#ffe96b;text-shadow:3px 4px 0 #834620,0 0 2px #653f2b}.home-sign p{margin:0 0 9px;font-weight:1000;font-size:clamp(19px,5vw,28px);color:#e4ffda;text-shadow:2px 2px 0 #765030}
+.hero-wrap{position:relative;margin:-8px auto -12px;max-width:590px;filter:drop-shadow(0 12px 11px rgba(48,85,39,.25))}
+.hero-art{width:100%;height:auto;display:block;overflow:visible}.hero-art .boy{animation:child-bob 2.7s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}.hero-art .sam-boy{animation-delay:.65s}.hero-art .tractor-svg{animation:tractor-idle .48s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center bottom}
+.home-intro{text-align:center;margin:0 0 8px;color:#205c31;font-size:14px;font-weight:900}.mode-picker{display:flex;justify-content:center;gap:12px;margin:8px auto 18px}
+.mode-option{min-width:0;flex:1;max-width:300px;padding:11px 14px;border-radius:23px;background:#fff7df;border:4px solid #fff;box-shadow:0 7px 0 #c99c58;font-weight:1000;font-size:18px;transition:transform .16s}
+.mode-option.active{background:#ffdf65;box-shadow:0 7px 0 #da8e31;border-color:#fff9ca;transform:translateY(-3px)}.mode-option .age{display:block;font-size:13px;opacity:.8}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:8px 0 12px}
+.game-card{position:relative;min-height:171px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:5px;border:5px solid #fff9dd;border-radius:29px;padding:18px 7px 13px;box-shadow:var(--shadow);transition:transform .14s;overflow:hidden}
+.game-card:before{content:"";height:100px;width:120%;position:absolute;left:-10%;bottom:-63px;background:rgba(255,255,255,.13);border-radius:50%}
+.game-card:active{transform:translateY(5px) scale(.99)}
+.game-card .pic{font-size:clamp(54px,11vw,86px);line-height:1;filter:drop-shadow(0 6px 2px rgba(0,0,0,.12));animation:gentle-bob 2.4s ease-in-out infinite}
+.game-card strong{position:relative;z-index:1;display:block;color:#5b3726;background:#ffe4a8;border:2px solid #fff5cc;padding:6px 10px;border-radius:14px;font-size:clamp(15px,4vw,21px);font-weight:1000;width:98%;text-align:center;line-height:1.16;box-shadow:0 4px 0 #bd813d}
+.game-card .sub{font-size:13px;font-weight:bold;margin-top:2px;color:#4a462e}
+.tint-green{background:linear-gradient(#bcf9b2,#54c566)}.tint-blue{background:linear-gradient(#a3edff,#5bb8ec)}.tint-yellow{background:linear-gradient(#ffe88b,#ffac4c)}.tint-pink{background:linear-gradient(#ffd4e7,#fba2be)}.tint-purple{background:linear-gradient(#e8d7ff,#bca5f9)}.tint-mint{background:linear-gradient(#b9f8e9,#71d8bc)}
+.game-heading{padding:7px 7px 4px;text-align:center}.game-heading h1{margin:0;font-size:clamp(26px,7vw,39px);color:#fffdfa;text-shadow:2px 3px 0 #895225}.game-heading p{font-size:clamp(16px,4vw,21px);font-weight:1000;margin:8px 0;color:#235833}
+.play-panel{border:7px solid #fff5d8;border-radius:31px;padding:20px 13px;min-height:390px;background:linear-gradient(#e8fbff 0%,#daf8cf 65%,#c8f4a7 65%,#92d66e 100%);box-shadow:0 9px 0 #bd9864,0 15px 24px rgba(38,75,23,.2);position:relative;overflow:hidden}
+.play-panel>*{position:relative;z-index:1}.play-panel:before{content:"";position:absolute;width:130px;height:130px;border-radius:50%;background:#fff2a0;top:-55px;right:-25px}
+.action-row{display:flex;justify-content:center;gap:13px;flex-wrap:wrap;margin:12px auto 6px}
+.action-btn,.animal-card,.colour-card,.sheep-card,.plot,.barn-btn{border-radius:24px;border:5px solid #fff9e8;box-shadow:0 7px 0 rgba(112,86,57,.3);transition:transform .12s;background:#fff4bb}
+.action-btn:active,.animal-card:active,.colour-card:active,.sheep-card:active,.plot:active,.barn-btn:active{transform:translateY(5px) scale(.97)}
+.action-btn{padding:13px 21px;min-height:72px;font-size:clamp(20px,5vw,29px);font-weight:1000;background:#ffd45e}
+.action-btn.secondary{background:#a5edf0}
+.animal-grid,.colour-grid,.sheep-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:550px;margin:15px auto}
+.animal-card{min-height:147px;background:linear-gradient(#fff6d9,#ffdfa1);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;font-weight:900;font-size:20px}
+.animal-emoji{font-size:clamp(65px,14vw,100px);line-height:1.1;display:block}.animal-card.jiggle .animal-emoji{animation:happy-jump .46s ease-in-out}
+.bubble{max-width:590px;margin:14px auto;text-align:center;border-radius:25px;background:#fff7de;border:5px solid white;padding:12px 14px;font-size:clamp(19px,4vw,26px);font-weight:1000;box-shadow:0 5px 0 #debc7b}
+.big-display{font-size:clamp(100px,31vw,185px);text-align:center;line-height:1.2;filter:drop-shadow(0 6px 1px rgba(0,0,0,.12));animation:gentle-bob 1.6s ease-in-out infinite}
+.drive-stage{height:220px;position:relative;background:linear-gradient(#a0eaff 58%,#b5df75 58%,#9aca58 80%,#cc9d6b 80%);border-radius:25px;overflow:hidden;margin:10px 0}
+.drive-stage .driving-tractor{position:absolute;font-size:130px;bottom:20px;left:0%;transition:left .48s ease-out;filter:drop-shadow(0 5px 3px rgba(48,62,44,.2))}
+.drive-stage .driving-tractor.go{animation:tractor-idle .18s ease-in-out 5 alternate}
+.drive-stage .tree{position:absolute;font-size:67px;bottom:67px;right:11%;}.drive-stage .barn{position:absolute;font-size:88px;bottom:64px;right:0}
+.barn-stage{display:flex;align-items:center;flex-direction:column;justify-content:center;min-height:240px}.barn-btn{font-size:145px;line-height:1.2;background:#ffe1a9;padding:12px 24px}.reveal{font-size:130px;animation:happy-jump .5s ease-in-out}
+.count-status{display:flex;justify-content:center;gap:12px;margin:16px auto}.count-dot{height:40px;width:40px;border-radius:50%;background:#fff;border:4px solid #e6c48f;display:grid;place-items:center;font-size:25px;font-weight:1000}.count-dot.done{background:#a5eb9c;border-color:#49a66a}
+.sheep-grid{grid-template-columns:repeat(auto-fit,minmax(106px,1fr));gap:10px;max-width:650px}.sheep-card{height:124px;background:#e2f6ff;font-size:79px}.sheep-card.done{opacity:.55;background:#b3ebc6;transform:scale(.91)}
+.count-number{font-size:clamp(65px,20vw,115px);font-weight:1000;color:#f56b34;text-shadow:4px 4px 0 #fff;text-align:center;margin:4px auto}
+.colour-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.colour-card{height:142px;background:#fff4d7;display:grid;place-items:center}.mini-tractor{max-width:100%;width:160px;height:90px;filter:drop-shadow(0 5px 2px #0002)}.colour-card.correct{background:#c7f6b8}.colour-card.wrong{animation:shake .35s}
+.plant-stage{display:flex;flex-direction:column;align-items:center;min-height:260px;justify-content:flex-end}.plant-grow{font-size:clamp(75px,25vw,155px);min-height:178px;display:grid;place-items:center;animation:grow-in .48s ease-out}.plot{min-height:85px;padding:8px 26px;font-size:58px;background:#a35b38;max-width:320px;width:90%;position:relative}.plot:before{content:"";height:15px;background:#744324;display:block;border-radius:100% 100% 60% 60%}.plant-help{text-align:center;font-size:20px;font-weight:900}
+.hay-load{display:flex;align-items:center;justify-content:center;gap:8px;min-height:100px}.hay-item{font-size:clamp(52px,12vw,86px)}.hay-truck{font-size:clamp(98px,28vw,170px);text-align:center;animation:gentle-bob 1s infinite}
+.toast{position:fixed;z-index:100;top:16%;left:50%;max-width:90%;transform:translate(-50%,-30px);background:#fff2a2;border:5px solid white;border-radius:24px;padding:12px 25px;font-size:25px;font-weight:1000;text-align:center;box-shadow:0 8px 14px #324b2544;opacity:0;pointer-events:none;transition:all .25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;z-index:110;pointer-events:none;inset:0}.confetti span{position:absolute;top:-10px;font-size:36px;animation:fall 1.8s ease-in forwards}
+.farm-footer{position:absolute;bottom:15px;left:0;width:100%;text-align:center;font-size:28px;letter-spacing:10px;pointer-events:none}
+.parent-note{text-align:center;font-size:12px;font-weight:bold;margin-top:16px;color:#31532c}
+@keyframes child-bob{50%{transform:translateY(-5px) rotate(1deg)}}@keyframes tractor-idle{to{transform:translateY(-3px)}}@keyframes gentle-bob{50%{transform:translateY(-6px)}}@keyframes happy-jump{50%{transform:translateY(-16px) scale(1.07)}}@keyframes float-cloud{to{transform:translateX(45px)}}@keyframes twirl{to{transform:rotate(360deg)}}@keyframes grow-in{from{transform:scale(.25)}to{transform:scale(1)}}@keyframes fall{to{top:105%;transform:rotate(600deg)}}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(min-width:680px){.game-grid{grid-template-columns:repeat(3,1fr)}.game-card{min-height:193px}.app{padding-left:25px;padding-right:25px}.mode-picker{gap:25px}}
+@media(max-width:380px){.brand{font-size:16px}.round-btn{width:38px;height:38px}.topbar{gap:4px}.game-card{min-height:142px;padding:10px 5px}.game-card .pic{font-size:54px}.game-card strong{font-size:14px}.hero-wrap{margin-bottom:-16px}.play-panel{padding:10px 8px}.animal-card{min-height:130px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}

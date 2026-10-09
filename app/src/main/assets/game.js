@@ -238,9 +238,48 @@
     main.scrollIntoView({block:"start",behavior:"auto"});
   }
   function area(html) {var node=document.getElementById("gameArea");if(node) node.innerHTML=html;}
+
+  // Consistent SVG farm animals instead of platform-dependent emoji artwork.
+  function farmArt(key) {
+    var svg='<svg class="farm-icon-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+    if(key==="cow") return svg+
+      '<ellipse cx="17" cy="51" rx="18" ry="13" fill="#35393b"/><ellipse cx="103" cy="51" rx="18" ry="13" fill="#35393b"/>'+
+      '<path d="M30 34L20 13L41 26M90 34L99 13L80 26" fill="#ffe2ac" stroke="#b78e63" stroke-width="3"/>'+
+      '<rect x="23" y="23" width="74" height="88" rx="34" fill="#fffaf0" stroke="#8c6a52" stroke-width="4"/>'+
+      '<path d="M24 48Q28 24 59 25L49 60Q34 68 24 48" fill="#32383a"/>'+
+      '<ellipse cx="44" cy="68" rx="5" ry="7" fill="#26343d"/><ellipse cx="77" cy="68" rx="5" ry="7" fill="#26343d"/>'+
+      '<ellipse cx="61" cy="91" rx="31" ry="20" fill="#ffb0bb" stroke="#e8899c" stroke-width="3"/>'+
+      '<ellipse cx="48" cy="88" rx="5" ry="7" fill="#a95c6b"/><ellipse cx="75" cy="88" rx="5" ry="7" fill="#a95c6b"/>'+
+      '<path d="M52 102Q62 110 72 102" fill="none" stroke="#96565b" stroke-width="3"/></svg>';
+    if(key==="pig") return svg+
+      '<path d="M17 51L8 11Q39 14 48 32M103 51L112 11Q81 14 72 32" fill="#ff9cab" stroke="#cf6f7c" stroke-width="4"/>'+
+      '<circle cx="60" cy="65" r="46" fill="#ffbfca" stroke="#e58e9c" stroke-width="5"/>'+
+      '<ellipse cx="43" cy="64" rx="5" ry="7" fill="#513d44"/><ellipse cx="79" cy="64" rx="5" ry="7" fill="#513d44"/>'+
+      '<ellipse cx="60" cy="88" rx="28" ry="19" fill="#ff96a9" stroke="#dc7086" stroke-width="3"/>'+
+      '<ellipse cx="49" cy="86" rx="5" ry="8" fill="#a95067"/><ellipse cx="71" cy="86" rx="5" ry="8" fill="#a95067"/></svg>';
+    if(key==="sheep") return svg+
+      '<g fill="#fffdf4" stroke="#dedecb" stroke-width="2"><circle cx="28" cy="42" r="23"/><circle cx="55" cy="24" r="22"/>'+
+      '<circle cx="84" cy="32" r="23"/><circle cx="96" cy="60" r="20"/><circle cx="78" cy="95" r="22"/>'+
+      '<circle cx="48" cy="99" r="21"/><circle cx="23" cy="73" r="20"/></g>'+
+      '<ellipse cx="23" cy="70" rx="17" ry="10" fill="#e4baa9"/><ellipse cx="98" cy="70" rx="17" ry="10" fill="#e4baa9"/>'+
+      '<ellipse cx="60" cy="72" rx="35" ry="34" fill="#f5dcc1" stroke="#d3b7a2" stroke-width="3"/>'+
+      '<ellipse cx="44" cy="68" rx="5" ry="7" fill="#43342f"/><ellipse cx="76" cy="68" rx="5" ry="7" fill="#43342f"/>'+
+      '<path d="M54 84Q60 80 66 84L60 90Z" fill="#a57162"/>'+
+      '<path d="M60 90Q54 102 47 93M60 90Q68 102 75 93" fill="none" stroke="#997060" stroke-width="3"/></svg>';
+    if(key==="chicken") return svg+
+      '<ellipse cx="60" cy="74" rx="43" ry="40" fill="#eeb16d" stroke="#c08245" stroke-width="4"/>'+
+      '<circle cx="60" cy="48" r="35" fill="#f5c181" stroke="#c1814e" stroke-width="3"/>'+
+      '<circle cx="45" cy="22" r="13" fill="#e74d38"/><circle cx="62" cy="14" r="13" fill="#ef543e"/>'+
+      '<circle cx="77" cy="23" r="12" fill="#e84e3b"/><circle cx="45" cy="49" r="5" fill="#38312b"/>'+
+      '<circle cx="77" cy="49" r="5" fill="#38312b"/>'+
+      '<path d="M61 55L43 68L61 79L79 68Z" fill="#ffd63e" stroke="#dfa01d" stroke-width="3"/>'+
+      '<path d="M62 84Q52 101 67 110Q80 104 73 86" fill="#e44e41"/></svg>';
+    if(key==="tractor") return tractorSVG("#ed3730").replace("mini-tractor","farm-icon-svg");
+    return '<span>'+key+'</span>';
+  }
   function drawAnimals() {
     area('<div class="bubble">Tap an animal to hear its sound!</div><div class="animal-grid">'+animalList.map(function(a){
-      return '<button class="animal-card '+a.colour+'" data-animal="'+a.key+'" aria-label="'+a.name+'"><span class="animal-emoji" aria-hidden="true">'+a.emoji+'</span><span>'+a.name+'</span></button>';
+      return '<button class="animal-card '+a.colour+'" data-animal="'+a.key+'" aria-label="'+a.name+'"><span class="animal-emoji" aria-hidden="true">'+farmArt(a.key)+'</span><span>'+a.name+'</span></button>';
     }).join("")+'</div><div class="bubble">🚜 Moo, baa, oink, cluck!</div>');
   }
 
@@ -268,7 +307,7 @@
   function drawGuess() {
     var pictures=state.options.map(function(item){
       return '<button class="sound-picture '+item.colour+'" data-guess-option="'+item.key+'" '+
-        'aria-label="'+item.name+'"><span class="sound-picture-icon" aria-hidden="true">'+item.emoji+
+        'aria-label="'+item.name+'"><span class="sound-picture-icon" aria-hidden="true">'+farmArt(item.key)+
         '</span><strong>'+item.name+'</strong></button>';
     }).join("");
     area('<div class="bubble">What made that farm sound?</div>'+
@@ -318,7 +357,7 @@
     dots+="</div>";
     var sheep='<div class="sheep-grid">'+Array.from({length:state.goal},function(_,i){
       var done=state.counted.indexOf(i)>=0;
-      return '<button class="sheep-card '+(done?"done":"")+'" data-sheep="'+i+'" aria-label="Sheep '+(i+1)+'" '+(done?"disabled":"")+'>🐑</button>';
+      return '<button class="sheep-card '+(done?"done":"")+'" data-sheep="'+i+'" aria-label="Sheep '+(i+1)+'" '+(done?"disabled":"")+'>'+farmArt("sheep")+'</button>';
     }).join("")+"</div>";
     area('<div class="bubble">Tap each sheep. How many can you count?</div><div class="count-number">'+(state.counted.length||"?")+'</div>'+sheep+dots+'<div class="bubble">Only numbers 1 to 5! 🌟</div>');
   }

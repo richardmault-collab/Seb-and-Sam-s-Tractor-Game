@@ -52,6 +52,25 @@ main{position:relative;z-index:2;max-width:720px;margin:0 auto}.home-sign{margin
 .colour-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.colour-card{height:142px;background:#fff4d7;display:grid;place-items:center}.mini-tractor{max-width:100%;width:160px;height:90px;filter:drop-shadow(0 5px 2px #0002)}.colour-card.correct{background:#c7f6b8}.colour-card.wrong{animation:shake .35s}
 .plant-stage{display:flex;flex-direction:column;align-items:center;min-height:260px;justify-content:flex-end}.plant-grow{font-size:clamp(75px,25vw,155px);min-height:178px;display:grid;place-items:center;animation:grow-in .48s ease-out}.plot{min-height:85px;padding:8px 26px;font-size:58px;background:#a35b38;max-width:320px;width:90%;position:relative}.plot:before{content:"";height:15px;background:#744324;display:block;border-radius:100% 100% 60% 60%}.plant-help{text-align:center;font-size:20px;font-weight:900}
 .hay-load{display:flex;align-items:center;justify-content:center;gap:8px;min-height:100px}.hay-item{font-size:clamp(52px,12vw,86px)}.hay-truck{font-size:clamp(98px,28vw,170px);text-align:center;animation:gentle-bob 1s infinite}
+
+/* Guess the Farm Sound: three large touch targets, no timer or score. */
+.sound-stage{display:flex;flex-direction:column;align-items:center;gap:11px;margin:9px auto 15px;padding:6px 0 10px}
+.sound-sparkles{font-size:25px;letter-spacing:12px}
+.listen-button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;min-width:176px;min-height:150px;border-radius:39px;border:7px solid #fff9dc;background:linear-gradient(160deg,#ffed91,#ffb846);box-shadow:0 9px 0 #cd873e,0 15px 25px #bf9b5455;transition:transform .12s}
+.listen-button:active{transform:translateY(6px) scale(.97)}
+.listen-button>span{font-size:75px;line-height:1;animation:gentle-bob 1.5s ease-in-out infinite}
+.listen-button>strong{font-size:19px;letter-spacing:.02em;color:#6a3d27}
+.listen-hint{font-size:16px;font-weight:900;color:#365934;text-align:center}
+.sound-picture-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;max-width:610px;margin:12px auto}
+.sound-picture{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:7px;min-width:0;min-height:147px;padding:14px 3px 11px;border:5px solid #fff9d9;border-radius:24px;box-shadow:0 7px 0 rgba(115,78,35,.24);transition:transform .12s}
+.sound-picture:active{transform:translateY(5px) scale(.97)}
+.sound-picture-icon{display:block;line-height:1;max-width:100%;font-size:clamp(53px,14vw,90px);filter:drop-shadow(0 4px 2px #41332d25)}
+.sound-picture strong{font-size:clamp(14px,3.8vw,22px);font-weight:1000;color:#513d30;text-align:center}
+.sound-picture.correct{background:linear-gradient(#e4ffb9,#95eb93);box-shadow:0 6px 0 #389d56}
+.sound-picture.correct .sound-picture-icon{animation:happy-jump .7s}
+.sound-picture.wrong{animation:shake .35s}
+.sound-tip{font-weight:1000;font-size:18px;text-align:center;color:#376441;margin:19px auto 4px}
+@media(max-width:380px){.sound-picture-grid{gap:6px}.sound-picture{border-width:3px;min-height:125px;border-radius:18px}.sound-picture-icon{font-size:49px}.sound-picture strong{font-size:13px}.listen-button{min-height:132px;min-width:160px}}
 .toast{position:fixed;z-index:100;top:16%;left:50%;max-width:90%;transform:translate(-50%,-30px);background:#fff2a2;border:5px solid white;border-radius:24px;padding:12px 25px;font-size:25px;font-weight:1000;text-align:center;box-shadow:0 8px 14px #324b2544;opacity:0;pointer-events:none;transition:all .25s}.toast.show{opacity:1;transform:translate(-50%,0)}
 .confetti{position:fixed;z-index:110;pointer-events:none;inset:0}.confetti span{position:absolute;top:-10px;font-size:36px;animation:fall 1.8s ease-in forwards}
 .farm-footer{position:absolute;bottom:15px;left:0;width:100%;text-align:center;font-size:28px;letter-spacing:10px;pointer-events:none}

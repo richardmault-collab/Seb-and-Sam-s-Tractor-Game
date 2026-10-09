@@ -13,6 +13,8 @@ An offline, ad-free Android farming game made for Seb (3) and Sam (1), with anim
 3. Download the **seb-and-sam-tractor-farm-debug-apk** artifact from the successful run.
 4. Unzip it and install `app-debug.apk` on an Android phone. Android may ask you to allow installation from this source.
 
+**Updating a previous test APK?** GitHub's temporary debug signing key can change between builds. If Android says the update cannot be installed, uninstall the previous Seb & Sam’s Tractor Farm app first, then install this APK. This clears only on-device sound/music preferences; there are no accounts or saved game achievements.
+
 You can also open the repository folder in **Android Studio**, allow Gradle to sync, and select **Run** on a connected Android device.
 
 ## Browser preview

@@ -56,7 +56,9 @@ function animals(){
  var scene=explore[s.scene];
  show('<div class="v14-story">Explore! Tap an animal or machine.</div>'+tabs(s.scene,explore,"explore-scene")+
  '<div class="v14-explore-scene '+scene.type+'">'+scenic(scene.type)+'<div class="v14-hotspots">'+scene.keys.map(function(key){return '<button data-v14="discover:'+key+'" class="v14-hotspot '+(s.visited.includes(key)?"visited":"")+'"><span>'+art(key)+'</span><strong>'+names[key]+'</strong></button>';}).join("")+'</div></div>'+
- '<p class="v14-hint">Tap to discover farm sounds and how the animals move!</p>');
+ '<div class="v14-care-row"><button class="v14-care-button" data-v14="care">'+
+ (s.scene===0?'🌽 Feed the chickens':s.scene===1?'🪮 Brush the pony':'🪣 Scoop with the digger')+
+ '</button></div><p class="v14-hint">Tap anything to hear it, or help with a farm job!</p>');
 }
 api.start=function(which,context){mode=which;c=context;s=which==="hay"?{loaded:0,delivered:false}:which==="drive"?{step:0}:which==="peek"?{scene:0,found:[]}:{scene:0,visited:[]};drag=null;render();};
 api.snapshot=function(){return {mode:mode,loaded:s.loaded,step:s.step,scene:s.scene,found:s.found&&s.found.slice()};};
@@ -72,6 +74,11 @@ api.handle=function(value,btn){
  if(cmd==="find"&&mode==="peek"){var i=Number(arg);if(!s.found.includes(i)){s.found.push(i);c.play(scenes[s.scene].animals[i]);render();if(s.found.length===3)c.celebrate("All three animals found!");}return true;}
  if(cmd==="search-next"&&mode==="peek"){s={scene:(s.scene+1)%3,found:[]};render();return true;}
  if(cmd==="explore-scene"&&mode==="animals"){s={scene:Number(arg),visited:[]};render();return true;}
+ if(cmd==="care"&&mode==="animals"){
+   var target=s.scene===0?"chicken":s.scene===1?"horse":"digger";
+   c.play(target);c.message(s.scene===0?"Chickens are fed! 🌽":s.scene===1?"Pony's coat is lovely! 🐴":"Great digging! 🪣");
+   if(btn)btn.classList.add("dancing");return true;
+ }
  if(cmd==="discover"&&mode==="animals"){if(!s.visited.includes(arg))s.visited.push(arg);c.play(arg);c.message(names[arg]+"!");if(btn)btn.classList.add("dancing");return true;}
  return false;
 };

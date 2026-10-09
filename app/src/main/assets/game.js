@@ -476,4 +476,9 @@
   window.setAppPaused=function(isPaused){paused=!!isPaused;if(paused){stopRecordedSounds();try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(_){};}syncMusic();};
   document.addEventListener("visibilitychange",function(){window.setAppPaused(document.hidden);});
   renderHome();syncMusic();
+  // Diagnostic screenshots used by CI; never activated by the Android launcher.
+  if (typeof location !== "undefined" && location.search) {
+    var preview = new URLSearchParams(location.search).get("preview");
+    if (preview && games[preview]) { selection="seb"; renderGame(preview); }
+  }
 })();

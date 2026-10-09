@@ -244,3 +244,12 @@ main{max-width:700px}
   .sound-picture-icon{font-size:clamp(48px,14vw,70px)}
 }
 @media(min-width:700px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.game-card{min-height:125px!important}.game-card .pic{width:64px;flex-basis:64px}}
+
+/* Native scalable farm drawings for a consistent look across Android devices. */
+.farm-icon-svg{display:block;width:100%;height:100%;max-width:108px;max-height:105px;margin:auto;filter:drop-shadow(0 4px 2px #563b2b2f)}
+.animal-card .animal-emoji{width:100px;height:102px;display:grid;place-items:center}
+.sound-picture-icon{width:100%;height:96px;display:grid;place-items:center}
+.sound-picture-icon .farm-icon-svg{max-height:94px;max-width:110px}
+.sheep-card .farm-icon-svg{width:106px;height:107px}
+.game-card svg{pointer-events:none}
+@media(max-width:390px){.sound-picture-icon{height:78px}.sound-picture-icon .farm-icon-svg{max-height:77px}.sheep-card .farm-icon-svg{width:87px;height:91px}}

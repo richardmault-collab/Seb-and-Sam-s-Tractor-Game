@@ -174,7 +174,7 @@
       return '<button class="game-card '+g.tint+'" data-activity="'+id+'" aria-label="'+esc(g.title)+'"><span class="pic" aria-hidden="true">'+g.icon+'</span><strong>'+esc(g.short)+'</strong><span class="sub">'+esc(g.sub)+'</span></button>';
     }).join("")+'</div>';
     main.innerHTML=heading+illustration+tabs+grid+'<p class="parent-note">Made with love ❤️ No adverts · No timers · Play offline</p>';
-    main.scrollIntoView({block:"start",behavior:"instant"});
+    main.scrollIntoView({block:"start",behavior:"auto"});
   }
   function renderGame(id) {
     if (!games[id]) return;
@@ -188,7 +188,7 @@
     else if (id==="colours") {state.target=0;drawColours();}
     else if (id==="plant") {state.stage=0;state.crop=0;drawPlant();}
     else if (id==="hay") {state.loaded=0;state.delivered=false;drawHay();}
-    main.scrollIntoView({block:"start",behavior:"instant"});
+    main.scrollIntoView({block:"start",behavior:"auto"});
   }
   function area(html) {var node=document.getElementById("gameArea");if(node) node.innerHTML=html;}
   function drawAnimals() {

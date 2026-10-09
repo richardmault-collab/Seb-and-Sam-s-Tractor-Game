@@ -4,6 +4,12 @@ const vm = require('vm');
 const assert = require('assert');
 const path = require('path');
 let handlers = {}, timers = [], nextId = 0;
+const recordedPlays = [];
+class FakeAudio {
+  constructor(url) {this.url=url;this.currentTime=0;this.volume=1;this.preload="auto";}
+  pause() {}
+  play() {recordedPlays.push(this.url);return Promise.resolve();}
+}
 class FakeElement {
   constructor() {
     this.innerHTML = ''; this.textContent = ''; this.hidden = false; this.style = {};
@@ -27,8 +33,8 @@ const document = {
 };
 const window = {};
 const context = {
-  document, window, Math, console,
-  localStorage: {getItem: () => 'false', setItem() {}},
+  document, window, Math, console, Audio: FakeAudio,
+  localStorage: {getItem: key => key === 'farm_music' ? 'false' : 'true', setItem() {}},
   setTimeout: (fn, ms) => {const id = ++nextId; timers.push({id, fn, ms}); return id;},
   clearTimeout: id => {timers = timers.filter(t => t.id !== id);},
   setInterval: () => 1,
@@ -74,8 +80,9 @@ for (let round = 0; round < 6; round++) {
   assert(html.includes('data-do="play-guess"'), 'Big replay button exists');
   click({do: 'play-guess'});
   click({do: 'play-guess'});
-  // Sound is disabled in this smoke environment; app must explain how to enable it.
-  assert(ids.toast.textContent.includes('Switch on'), 'Muted playback offers sound guidance');
+  const guessedSound=recordedPlays[recordedPlays.length-1];
+  assert(guessedSound && /^sounds\/(cow|sheep|pig|chicken|tractor)\.ogg$/.test(guessedSound),
+    'Actual bundled farm recording plays, never a robotic spoken imitation');
   let correct = null;
   for (const key of optionKeys) {
     click({guessOption: key});
@@ -99,6 +106,8 @@ assert.equal((ids.gameArea.innerHTML.match(/data-guess-option=/g) || []).length,
 click({activity: 'animals'});
 assert(ids.gameArea.innerHTML.includes('data-animal="cow"'));
 click({animal: 'cow'});
+assert(recordedPlays.includes('sounds/cow.ogg'), 'Animal tap plays a recorded cow');
+
 click({activity: 'colours'});
 assert(ids.gameArea.innerHTML.includes('data-colour="RED"'));
 click({colour: 'RED'}); advance(1900);
@@ -111,11 +120,20 @@ click({activity: 'hay'});
 for (let i = 0; i < 3; i++) click({do: 'load'});
 assert(ids.gameArea.innerHTML.includes('DELIVER HAY'));
 click({do: 'deliver'}); advance(2200);
+assert(recordedPlays.includes('sounds/hay.ogg'), 'Loading hay uses a physical foley recording');
+
 click({activity: 'drive'});
 for (let i = 0; i < 4; i++) click({do: 'drive'});
 advance(2300);
+assert(recordedPlays.includes('sounds/tractor.ogg'), 'Driving plays a tractor engine recording');
 click({activity: 'peek'});
 click({do: 'peek'}); click({do: 'peek'});
 assert(window.goHome(), 'Can return home');
 assert(!window.goHome(), 'Can exit home');
-console.log('PASS: eight activities including 3-choice farm sounds, two age profiles, and counting 1–5');
+// Verify the real audio assets will be packed into the APK.
+for (const id of ['cow', 'sheep', 'pig', 'chicken', 'tractor', 'horn', 'water', 'seed', 'hay']) {
+  const filename=path.join(__dirname, '../app/src/main/assets/sounds', id+'.ogg');
+  assert(fs.statSync(filename).size > 500, 'Missing authentic recording: '+id);
+  assert.equal(fs.readFileSync(filename).subarray(0,4).toString(), 'OggS', 'Invalid Ogg recording: '+id);
+}
+console.log('PASS: 8 activities, animal/tractor recordings, nine offline Ogg assets and counting 1–5');

@@ -19,25 +19,31 @@
   // Bundled inside the APK (file:///android_asset/sounds/), never streamed.
   var recordingCache = {};
   var activeRecordings = {};
+  var recordingRounds = {};
+  var recordedAlternates = { cow: true, sheep: true, pig: true, chicken: true, tractor: true };
   var realEffects = { horn: "horn", engine: "tractor", water: "water", seed: "seed", hay: "hay" };
   function playRecording(key) {
     if (!sounds || paused) return false;
     try {
-      // Restart a sound when tapped again; this keeps guessing rounds responsive.
-      var clip = recordingCache[key];
+      // Rotate between two real takes, keeping the animal/vehicle identity.
+      var index = recordingRounds[key] || 0;
+      recordingRounds[key] = index + 1;
+      var chosen = recordedAlternates[key] && index % 2 ? key + "_2" : key;
+      var clip = recordingCache[chosen];
       if (!clip) {
-        clip = new Audio("sounds/" + key + ".ogg");
+        clip = new Audio("sounds/" + chosen + ".ogg");
         clip.preload = "auto";
         clip.volume = key === "horn" ? 0.68 : 0.85;
-        recordingCache[key] = clip;
+        recordingCache[chosen] = clip;
       }
-      clip.pause();
+      // Stop an earlier take, so sounds never pile on top of each other.
+      stopRecordedSounds();
       clip.currentTime = 0;
       var playing = clip.play();
       if (playing && typeof playing.catch === "function") {
         playing.catch(function () { message("Could not play sound. Please try again."); });
       }
-      activeRecordings[key] = clip;
+      activeRecordings[chosen] = clip;
       return true;
     } catch (_) {
       message("Could not play sound. Please try again.");

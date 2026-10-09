@@ -34,6 +34,30 @@ jobs:
         run: node --check app/src/main/assets/game.js
       - name: Exercise gameplay and counting limit
         run: node tests/smoke.cjs
+      - name: Validate new farm game JavaScript
+        run: node --check app/src/main/assets/v14.js
+      - name: Capture visual checks on Android-size viewport
+        continue-on-error: true
+        run: |
+          CHROME=$(command -v google-chrome || command -v chromium || true)
+          if [ -n "$CHROME" ]; then
+            mkdir -p screenshots
+            for scene in home hay drive peek animals guess; do
+              URL="file://$GITHUB_WORKSPACE/app/src/main/assets/index.html"
+              if [ "$scene" != "home" ]; then URL="$URL?preview=$scene"; fi
+              "$CHROME" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars \
+                --allow-file-access-from-files --virtual-time-budget=1800 --window-size=430,900 \
+                --screenshot="$GITHUB_WORKSPACE/screenshots/$scene.png" "$URL" >/dev/null 2>&1 || true
+            done
+          fi
+      - name: Upload visual previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seb-and-sam-v14-screen-previews
+          path: screenshots/*.png
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Verify bundled offline assets
         run: |
           test -f app/src/main/assets/index.html

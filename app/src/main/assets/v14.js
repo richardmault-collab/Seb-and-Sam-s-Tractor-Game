@@ -1,7 +1,7 @@
 /* Seb and Sam v1.4 scene-based farming games; no accounts, network or tracking. */
 (function(){
 "use strict";
-var api=window.FarmV14={},c,mode,s,drag;
+var api=window.FarmV14={},c,mode,s,drag,suppressBaleClickUntil=0;
 var names={cow:"Cow",sheep:"Sheep",pig:"Pig",chicken:"Chicken",horse:"Pony",duck:"Duck",goat:"Goat",dog:"Dog",cat:"Cat",tractor:"Tractor",combine:"Combine",digger:"Digger",loader:"Loader"};
 var emoji={cow:"🐄",sheep:"🐑",pig:"🐷",chicken:"🐓",horse:"🐴",duck:"🦆",goat:"🐐",dog:"🐕",cat:"🐈",tractor:"🚜",combine:"🌾",digger:"🚧",loader:"🏗️"};
 var scenes=[
@@ -65,7 +65,7 @@ api.snapshot=function(){return {mode:mode,loaded:s.loaded,step:s.step,scene:s.sc
 api.handle=function(value,btn){
  if(!value)return false;
  var bits=value.split(":"),cmd=bits[0],arg=bits[1];
- if(cmd==="bale"&&mode==="hay"){load();return true;}
+ if(cmd==="bale"&&mode==="hay"){if(Date.now()>=suppressBaleClickUntil)load();return true;}
  if(cmd==="deliver"&&mode==="hay"&&s.loaded===3){s.delivered=true;c.fx("engine");render();c.celebrate("Hay delivered! Brilliant farming!");return true;}
  if(cmd==="hay-again"&&mode==="hay"){s={loaded:0,delivered:false};render();return true;}
  if(cmd==="step"&&mode==="drive"){var n=Number(arg);if(n===s.step){c.fx(n===0||n===4?"engine":n===1?"horn":"hay");s.step++;render();if(s.step===5)c.celebrate("You made it to the field!");}return true;}
@@ -96,6 +96,7 @@ document.addEventListener("pointerup",function(e){
  if(!drag||drag.id!==e.pointerId)return;var moved=drag.moved;drag=null;
  var ghost=document.querySelector(".v14-ghost");if(ghost)ghost.remove();
  if(!moved)return;
+ suppressBaleClickUntil=Date.now()+350; // Ignore synthetic click after a drop.
  e.preventDefault();
  var t=document.querySelector(".v14-drop-target");
  if(t){var r=t.getBoundingClientRect();if(e.clientX>=r.left-20&&e.clientX<=r.right+20&&e.clientY>=r.top-20&&e.clientY<=r.bottom+20){load();return;}}

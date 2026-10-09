@@ -31,7 +31,8 @@
       var chosen = recordedAlternates[key] && index % 2 ? key + "_2" : key;
       var clip = recordingCache[chosen];
       if (!clip) {
-        clip = new Audio("sounds/" + chosen + ".ogg");
+        var extension = chosen.slice(-2) === "_2" && key !== "tractor" ? ".wav" : ".ogg";
+        clip = new Audio("sounds/" + chosen + extension);
         clip.preload = "auto";
         clip.volume = key === "horn" ? 0.68 : 0.85;
         recordingCache[chosen] = clip;

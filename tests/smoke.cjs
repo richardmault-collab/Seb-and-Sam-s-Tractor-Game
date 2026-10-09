@@ -50,9 +50,9 @@ function advance(ms) {
 function sheepCount() {
   return (ids.gameArea.innerHTML.match(/data-sheep=/g) || []).length;
 }
-assert.equal((ids.main.innerHTML.match(/data-activity=/g) || []).length, 3, 'Sam has 3 activities');
+assert.equal((ids.main.innerHTML.match(/data-activity=/g) || []).length, 4, 'Sam has 4 activities including sound guessing');
 click({player: 'seb'});
-assert.equal((ids.main.innerHTML.match(/data-activity=/g) || []).length, 7, 'Seb has 7 activities');
+assert.equal((ids.main.innerHTML.match(/data-activity=/g) || []).length, 8, 'Seb has 8 activities including sound guessing');
 click({activity: 'count'});
 for (let count = 1; count <= 5; count++) {
   assert.equal(sheepCount(), count);
@@ -60,6 +60,42 @@ for (let count = 1; count <= 5; count++) {
   advance(2200);
 }
 assert.equal(sheepCount(), 1, 'Counting cycles to 1, never exceeds 5');
+
+// Guess the Farm Sound: exactly three unique clickable picture choices per round.
+// Wrong answers keep the same target; right answers advance and never repeat the
+// correct answer immediately. Listen button can be used any number of times.
+click({activity: 'guess'});
+let previousAnswer = null;
+for (let round = 0; round < 6; round++) {
+  const html = ids.gameArea.innerHTML;
+  const optionKeys = [...html.matchAll(/data-guess-option="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(optionKeys.length, 3, 'Exactly three picture options per sound');
+  assert.equal(new Set(optionKeys).size, 3, 'Three different farm pictures');
+  assert(html.includes('data-do="play-guess"'), 'Big replay button exists');
+  click({do: 'play-guess'});
+  click({do: 'play-guess'});
+  // Sound is disabled in this smoke environment; app must explain how to enable it.
+  assert(ids.toast.textContent.includes('Switch on'), 'Muted playback offers sound guidance');
+  let correct = null;
+  for (const key of optionKeys) {
+    click({guessOption: key});
+    if (ids.toast.textContent.includes('Well done')) {
+      correct = key;
+      break;
+    }
+    assert.equal(ids.gameArea.innerHTML, html, 'Wrong guess leaves options untouched');
+  }
+  assert(correct, 'One of three choices must be correct');
+  assert.notEqual(correct, previousAnswer, 'Back-to-back sound targets differ');
+  previousAnswer = correct;
+  // Tapping during celebration must not trigger another result.
+  click({guessOption: correct});
+  advance(2200);
+}
+click({player: 'sam'});
+assert.equal((ids.main.innerHTML.match(/data-activity=/g) || []).length, 4);
+click({activity: 'guess'});
+assert.equal((ids.gameArea.innerHTML.match(/data-guess-option=/g) || []).length, 3);
 click({activity: 'animals'});
 assert(ids.gameArea.innerHTML.includes('data-animal="cow"'));
 click({animal: 'cow'});
@@ -82,4 +118,4 @@ click({activity: 'peek'});
 click({do: 'peek'}); click({do: 'peek'});
 assert(window.goHome(), 'Can return home');
 assert(!window.goHome(), 'Can exit home');
-console.log('PASS: seven activities, two age profiles, and counting 1–5 wraparound');
+console.log('PASS: eight activities including 3-choice farm sounds, two age profiles, and counting 1–5');

@@ -1,0 +1,34 @@
+name: Import Real Farm Recordings
+
+on:
+  push:
+    paths:
+      - .github/workflows/import-farm-audio.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-recordings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out game
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Confirm audio tools
+        run: |
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+      - name: Collect and optimise real-world sounds
+        run: bash scripts/import-farm-audio.sh
+      - name: Commit audio files to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/sounds/
+          if ! git diff --cached --quiet; then
+            git commit -m "Bundle licensed real animal and tractor sound recordings"
+            git push origin HEAD:main
+          fi

@@ -81,7 +81,7 @@
     animals: { title: "Explore the Farm", short: "Explore the Farm", icon: "🐄", tint: "tint-green", sub: "Meet the animals and machines" },
     guess: { title: "Guess the Farm Sound", short: "Guess the Sound", icon: "🐄", tint: "tint-blue", sub: "Listen and choose a picture" },
     drive: { title: "Get Ready to Drive", short: "Farm Jobs", icon: "🚜", tint: "tint-yellow", sub: "Five jobs to get to the field" },
-    peek: { title: "Find the Farm Animals", short: "Find the Animals", icon: "🏡", tint: "tint-pink", sub: "Search the barn, field and yard" },
+    peek: { title: "Find the Farm Animals", short: "Find the Animals", icon: "🐑", tint: "tint-pink", sub: "Search the barn, field and yard" },
     count: { title: "Count the Sheep", short: "Count to Five", icon: "🐑", tint: "tint-blue", sub: "One, two, three, four, five" },
     colours: { title: "Tractor Colours", short: "Tractor Colours", icon: "🚜", tint: "tint-purple", sub: "Find the right colour" },
     plant: { title: "Plant the Seeds", short: "Grow a Garden", icon: "🌻", tint: "tint-mint", sub: "Seeds, water and sunshine" },

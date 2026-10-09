@@ -32,6 +32,7 @@
   ];
   var games = {
     animals: { title: "Tap the Animals", short: "Animal Sounds", icon: "🐄", tint: "tint-green", sub: "Listen and learn" },
+    guess: { title: "Guess the Farm Sound", short: "Guess the Sound", icon: "🔊", tint: "tint-blue", sub: "Listen and choose a picture" },
     drive: { title: "Drive the Tractor", short: "Tractor Time", icon: "🚜", tint: "tint-yellow", sub: "Brrrm! Beep beep!" },
     peek: { title: "Who's in the Barn?", short: "Barn Peekaboo", icon: "🏠", tint: "tint-pink", sub: "What will you find?" },
     count: { title: "Count the Sheep", short: "Count to Five", icon: "🐑", tint: "tint-blue", sub: "One, two, three, four, five" },
@@ -39,7 +40,13 @@
     plant: { title: "Plant the Seeds", short: "Grow a Garden", icon: "🌻", tint: "tint-mint", sub: "Seeds, water and sunshine" },
     hay: { title: "Deliver the Hay", short: "Hay Delivery", icon: "🌾", tint: "tint-yellow", sub: "Help on the farm" }
   };
-  var lists = { sam: ["animals", "drive", "peek"], seb: ["count", "colours", "plant", "hay", "animals", "drive", "peek"] };
+  var farmSounds = animalList.map(function(a) {
+    return { key: a.key, name: a.name, emoji: a.emoji, colour: a.colour };
+  }).concat([{ key: "tractor", name: "Tractor", emoji: "🚜", colour: "tint-yellow" }]);
+  var lists = {
+    sam: ["animals", "guess", "drive", "peek"],
+    seb: ["guess", "count", "colours", "plant", "hay", "animals", "drive", "peek"]
+  };
 
   function loadPref(key, fallback) {
     try { var v = localStorage.getItem("farm_" + key); return v === null ? fallback : v === "true"; } catch (_) { return fallback; }
@@ -123,10 +130,10 @@
     soundButton.classList.toggle("off", !sounds);
     soundButton.setAttribute("aria-pressed", String(sounds));
     soundButton.textContent = sounds ? "🔊" : "🔇";
-    if ((!music || paused || !audioContext) && musicTimer !== null) {
+    if ((!music || paused || !audioContext || current === "guess") && musicTimer !== null) {
       clearInterval(musicTimer);musicTimer=null;
     }
-    if (music && !paused && audioContext && musicTimer === null) {
+    if (music && !paused && current !== "guess" && audioContext && musicTimer === null) {
       musicTimer = setInterval(musicTick, 375);
       musicTick();
     }
@@ -163,7 +170,7 @@
   }
   function esc(s) {return String(s).replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch];});}
   function renderHome() {
-    clearTimeout(nextRoundTimer);current="home";homeButton.hidden=true;
+    clearTimeout(nextRoundTimer);current="home";syncMusic();homeButton.hidden=true;
     var heading='<div class="home-sign"><h1>Seb & Sam’s</h1><p>🚜 TRACTOR FARM 🚜</p></div>';
     var illustration='<div class="hero-wrap">'+document.getElementById("tractorTemplate").innerHTML+'</div>';
     var tabs='<p class="home-intro">Who is playing today?</p><div class="mode-picker" role="group" aria-label="Choose player">'+
@@ -178,10 +185,11 @@
   }
   function renderGame(id) {
     if (!games[id]) return;
-    clearTimeout(nextRoundTimer);current=id;state={};
+    clearTimeout(nextRoundTimer);current=id;state={};syncMusic();
     homeButton.hidden=false;
     main.innerHTML='<div class="game-heading"><h1>'+games[id].icon+" "+esc(games[id].title)+'</h1><p>'+esc(games[id].sub)+'</p></div><div id="gameArea" class="play-panel"></div>';
     if (id==="animals") drawAnimals();
+    else if (id==="guess") newSoundRound();
     else if (id==="drive") {state.progress=0;drawDrive();}
     else if (id==="peek") {state.open=false;state.pick=0;drawPeek();}
     else if (id==="count") {state.goal=1;state.counted=[];drawCount();}
@@ -195,6 +203,73 @@
     area('<div class="bubble">Tap an animal to hear its sound!</div><div class="animal-grid">'+animalList.map(function(a){
       return '<button class="animal-card '+a.colour+'" data-animal="'+a.key+'" aria-label="'+a.name+'"><span class="animal-emoji" aria-hidden="true">'+a.emoji+'</span><span>'+a.name+'</span></button>';
     }).join("")+'</div><div class="bubble">🚜 Moo, baa, oink, cluck!</div>');
+  }
+
+  function shuffled(items) {
+    var copy=items.slice();
+    for (var i=copy.length-1;i>0;i--) {
+      var j=Math.floor(Math.random()*(i+1));
+      var temp=copy[i];copy[i]=copy[j];copy[j]=temp;
+    }
+    return copy;
+  }
+  // Exactly one answer and two different distractors on every round.
+  // Avoid back-to-back repetitions of the same correct answer.
+  function newSoundRound() {
+    if (current !== "guess") return;
+    var previous=state.answer;
+    var pool=farmSounds.filter(function(item){return item.key!==previous;});
+    var answer=pool[Math.floor(Math.random()*pool.length)];
+    var others=shuffled(farmSounds.filter(function(item){return item.key!==answer.key;})).slice(0,2);
+    state.answer=answer.key;
+    state.options=shuffled([answer].concat(others));
+    state.solved=false;
+    drawGuess();
+  }
+  function drawGuess() {
+    var pictures=state.options.map(function(item){
+      return '<button class="sound-picture '+item.colour+'" data-guess-option="'+item.key+'" '+
+        'aria-label="'+item.name+'"><span class="sound-picture-icon" aria-hidden="true">'+item.emoji+
+        '</span><strong>'+item.name+'</strong></button>';
+    }).join("");
+    area('<div class="bubble">What made that farm sound?</div>'+
+      '<div class="sound-stage"><span class="sound-sparkles" aria-hidden="true">🎵 ✨ 🎶</span>'+
+      '<button class="listen-button" data-do="play-guess" aria-label="Play the farm sound">'+
+      '<span aria-hidden="true">🔊</span><strong>TAP TO LISTEN</strong></button>'+
+      '<span class="listen-hint">Tap again to hear it again!</span></div>'+
+      '<div class="sound-picture-grid" role="group" aria-label="Choose from three pictures">'+pictures+'</div>'+
+      '<div class="sound-tip">👂 Listen, look and choose!</div>');
+  }
+  function playGuessSound() {
+    if (current !== "guess" || state.solved) return;
+    if (!sounds) {
+      message("Switch on the 🔊 sound button first!");
+      return;
+    }
+    if (state.answer === "tractor") {
+      fx("engine");
+      // A short tractor horn distinguishes the engine from animal noises.
+      setTimeout(function(){if(current==="guess" && state.answer==="tractor" && !state.solved)fx("horn");},450);
+      return;
+    }
+    animalNoise(state.answer);
+    var calls={cow:"Mooooooo",sheep:"Baaaaaaa",pig:"Oink oink",chicken:"Cluck cluck"};
+    say(calls[state.answer]);
+  }
+  function chooseSoundPicture(key, button) {
+    if (current !== "guess" || state.solved) return;
+    if (key === state.answer) {
+      state.solved=true;
+      var match=farmSounds.find(function(item){return item.key===key;});
+      if (button) button.classList.add("correct");
+      celebrate("That's the "+match.name.toLowerCase()+"! Well done!");
+      delay(newSoundRound,2200);
+    } else {
+      if (button) button.classList.add("wrong");
+      fx("wrong");
+      say("Good try! Listen again.");
+      message("Good try! Listen again! 💛");
+    }
   }
   function drawDrive() {
     var pct=Math.min(state.progress*18,73);
@@ -243,6 +318,7 @@
     if(button){button.classList.remove("jiggle");void button.offsetWidth;button.classList.add("jiggle");}
   }
   function doAction(which, button) {
+    if(which==="play-guess"){playGuessSound();return;}
     if(which==="horn"){fx("horn");say("Beep beep!");return;}
     if(which==="drive"){
       state.progress++;fx("engine");drawDrive();
@@ -279,6 +355,7 @@
       fx("tap");renderGame(button.dataset.activity);return;
     }
     if(button.dataset.animal){tapAnimal(button.dataset.animal,button);return;}
+    if(button.dataset.guessOption){chooseSoundPicture(button.dataset.guessOption,button);return;}
     if(button.dataset.sheep!==undefined){
       if(current!=="count")return;
       var i=Number(button.dataset.sheep);

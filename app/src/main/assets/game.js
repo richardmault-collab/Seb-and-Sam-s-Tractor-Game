@@ -204,23 +204,23 @@
   function esc(s) {return String(s).replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch];});}
   function renderHome() {
     clearTimeout(nextRoundTimer);stopRecordedSounds();current="home";syncMusic();homeButton.hidden=true;
-    var heading='<div class="home-sign"><h1>Seb & Sam’s</h1><p>🚜 TRACTOR FARM 🚜</p></div>';
-    var illustration='<div class="hero-wrap">'+document.getElementById("tractorTemplate").innerHTML+'</div>';
-    var tabs='<p class="home-intro">Who is playing today?</p><div class="mode-picker" role="group" aria-label="Choose player">'+
+    var heading='<div class="home-sign"><h1><span class="seb-text">Seb</span><span class="amp-text"> & </span><span class="sam-text">Sam’s</span></h1><p>TRACTOR FARM</p></div>';
+    var illustration='<div class="hero-wrap"><div class="hero-farm-scene"></div>'+document.getElementById("tractorTemplate").innerHTML+'<span class="hero-sticker hero-sticker-a">🌻</span><span class="hero-sticker hero-sticker-b">🐄</span></div>';
+    var tabs='<p class="home-intro">WHO IS PLAYING TODAY?</p><div class="mode-picker" role="group" aria-label="Choose player">'+
       '<button data-player="sam" class="mode-option '+(selection==="sam"?"active":"")+'">👶 Sam <span class="age">Little farmer · 1+</span></button>'+
       '<button data-player="seb" class="mode-option '+(selection==="seb"?"active":"")+'">🧒 Seb <span class="age">Big farmer · 3+</span></button></div>';
     var grid='<div class="game-grid">'+lists[selection].map(function(id){
       var g=games[id];
-      return '<button class="game-card '+g.tint+'" data-activity="'+id+'" aria-label="'+esc(g.title)+'"><span class="pic" aria-hidden="true">'+g.icon+'</span><strong>'+esc(g.short)+'</strong><span class="sub">'+esc(g.sub)+'</span></button>';
+      return '<button class="game-card '+g.tint+'" data-activity="'+id+'" aria-label="'+esc(g.title)+'"><span class="pic" aria-hidden="true">'+g.icon+'</span><span class="card-copy"><strong>'+esc(g.short)+'</strong><span class="sub">'+esc(g.sub)+'</span></span><span class="card-arrow" aria-hidden="true">➜</span></button>';
     }).join("")+'</div>';
-    main.innerHTML=heading+illustration+tabs+grid+'<p class="parent-note">Made with love ❤️ No adverts · No timers · Play offline</p>';
+    main.innerHTML=heading+illustration+tabs+'<div class="game-picker-title">🌾 Pick a farm adventure! 🌾</div>'+grid+'<p class="parent-note">Made with love ❤️ No adverts · No timers · Play offline</p>';
     main.scrollIntoView({block:"start",behavior:"auto"});
   }
   function renderGame(id) {
     if (!games[id]) return;
     clearTimeout(nextRoundTimer);stopRecordedSounds();current=id;state={};syncMusic();
     homeButton.hidden=false;
-    main.innerHTML='<div class="game-heading"><h1>'+games[id].icon+" "+esc(games[id].title)+'</h1><p>'+esc(games[id].sub)+'</p></div><div id="gameArea" class="play-panel"></div>';
+    main.innerHTML='<div class="game-heading"><h1>'+games[id].icon+" "+esc(games[id].title)+'</h1><p>'+esc(games[id].sub)+'</p></div><div id="gameArea" class="play-panel theme-'+id+'"></div>';
     if (id==="animals") drawAnimals();
     else if (id==="guess") newSoundRound();
     else if (id==="drive") {state.progress=0;drawDrive();}

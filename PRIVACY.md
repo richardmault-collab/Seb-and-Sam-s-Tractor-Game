@@ -4,7 +4,7 @@ Seb & Sam's Tractor Farm does not request internet access and does not include a
 
 The boys are depicted as stylised, hand-drawn SVG cartoon characters informed by a family photo. The original photo is **not included in this public repository**, and the game does not capture or upload personal photos.
 
-Music and sound effects are generated on the device by Web Audio. Spoken prompts are read using Android's local text-to-speech engine when available; if opened in a regular web browser, the device's browser speech engine may be used instead.
+Real animal and farm machinery recordings are bundled as local audio assets in the APK and played directly on the device. Music and simple feedback chimes are generated with Web Audio. Optional learning prompts (such as counting) are spoken by Android's local text-to-speech engine when available; a regular browser uses its speech service where supported. Text-to-speech is never used to imitate animal calls or give away the answer to Guess the Farm Sound.
 
 The app saves only the two music/sound preference settings in on-device browser storage. No user information is sent to a server.
 

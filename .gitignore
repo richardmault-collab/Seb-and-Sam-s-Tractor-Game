@@ -1,0 +1,10 @@
+# Android and IDE generated content
+.gradle/
+**/build/
+.idea/
+*.iml
+local.properties
+.DS_Store
+captures/
+*.apk
+*.aab

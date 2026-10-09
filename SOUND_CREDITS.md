@@ -35,3 +35,28 @@ Four additional real recordings are supplied as bundled WAV files (in order to p
 Alternates change automatically on repeat taps. The recording files are included offline in the APK, and source audio credits are kept here.
 
 The cheerful background melody, tap/success tones and number-reading prompts remain separate interface/narration features. In **Guess the Farm Sound**, all clues play recorded sound only; the app does not read the answer or imitate an animal by voice.
+
+## New animal and machinery audio for v1.4
+
+The added audio files are original field recordings included offline as WAV assets. They were obtained from the [Wilhelm SFX sample repository](https://github.com/Wh1teDuke/WilhelmSFX) and are listed for credit and source tracing. They rotate between two real takes when available.
+
+| Game file | Source recording | Attribution |
+| --- | --- | --- |
+| `horse.wav` | [Horse Neigh Shortened](https://freesound.org/s/269571/) | shadowisp |
+| `horse_2.wav` | [Horse](https://freesound.org/s/184503/) | madklown |
+| `duck.wav` | [Ducks](https://freesound.org/s/607226/) | d4xx |
+| `duck_2.wav` | [Quack](https://freesound.org/s/732999/) | bjelicvuk |
+| `goat.wav` | [Single Goat Calling Out](https://freesound.org/s/675417/) | craigsmith |
+| `goat_2.wav` | [Goat Sound 2](https://freesound.org/s/188182/) | erokia |
+| `dog.wav` | [Single Dog Bark](https://freesound.org/s/277058/) | kwahmah_02 |
+| `dog_2.wav` | [Dog Bark 2](https://freesound.org/s/464406/) | michael_grinnell |
+| `cat.wav` | [Cat Meow 1](https://freesound.org/s/156643/) | yoyodaman234 |
+| `cat_2.wav` | [Meow 1](https://freesound.org/s/686775/) | nathan-osman |
+| `combine.wav` | [Marine Diesel Engine](https://freesound.org/s/264864/) | augustsandberg |
+| `digger.wav` | [Car Engine](https://freesound.org/s/458461/) | prometheus888 |
+| `loader.wav` | [Motor Loop 3](https://freesound.org/s/325809/) | soundjoao |
+
+**Machinery limitation:** The combine/digger/loader sounds are real motor/engine recordings, not recordings of the precise machinery portrayed. They are used as approximate mechanical audio effects, not exact acoustic identifiers. The tractor uses the separately credited genuine tractor recording.
+
+**Licensing:** The WilhelmSFX distribution contains recordings sourced under Creative Commons CC0 or other available sound library licence arrangements; this document preserves provenance but the specific original Freesound licence and suitability for redistribution should be independently verified before any public/commercial release. This family test app remains ad-free and offline.
+

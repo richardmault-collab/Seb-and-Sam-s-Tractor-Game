@@ -20,6 +20,11 @@ get horn "513741__danlucaz__truck-horn.wav"
 get water "319963__bart1234567__pouring-water-2015.wav"
 get seed "370367__lilmati__step-on-dirt.wav"
 get hay "464690__branndybottle__grasswalking_step2.wav"
+# Second genuine takes keep repeat taps interesting for toddlers.
+get cow_2 "275154__bird_man__moo.wav"
+get sheep_2 "710298__michaelperfect__sheep-baaing-3-norwegian-sheep-expressing-itself-concisely.wav"
+get pig_2 "442904__qubodup__pig-squeak.wav"
+get chicken_2 "435508__benjaminnelan__rooster-crow-1.wav"
 
 echo "Downloading genuine tractor recording from Wikimedia Commons..."
 TRACTOR_FILE="WWS_TractorUrsusC328driving.ogg"
@@ -48,9 +53,15 @@ encode horn 0 1.80 wav
 encode water 0 2.60 wav
 encode seed 0 1.10 wav
 encode hay 0 1.20 wav
+# Alternate takes of the same farm sound (real recordings, never synthesised voices).
+encode cow_2 0 1.90 wav
+encode sheep_2 0 1.25 wav
+encode pig_2 0 1.10 wav
+encode chicken_2 0 1.30 wav
+encode tractor_2 13 3.80 ogg
 
 for f in app/src/main/assets/sounds/*.ogg; do
   ffprobe -v error "$f" >/dev/null
   test "$(stat -c%s "$f")" -gt 500
 done
-echo "All nine farm recordings are bundled and decodable."
+echo "All fourteen real farm clips are bundled and decodable."

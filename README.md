@@ -17,6 +17,21 @@ The animal noises now come from **real cows, sheep, pigs and chickens**, and the
 - In Guess the Farm Sound, Animal Sounds, and Tractor Drive, repeated taps now rotate between **two genuine recorded takes**. The game contains fourteen offline sound files (original Ogg files plus additional WAV animal calls). Background music still pauses during sound guessing.
 - Counting remains limited to **1–5**. All eight mini-games remain available for Seb and four for Sam.
 
+## New in v1.4: The Farm Adventure update
+
+The game now has purposeful farm jobs rather than just repeated tapping:
+
+- **Deliver the Hay:** Drag bales onto a trailer (or tap to load), see them stack, then drive the loaded trailer to the barn.
+- **Get Ready to Drive:** Start the tractor, switch on its amber beacon, attach the trailer, open the gate, and drive forward into the field.
+- **Find the Farm Animals:** Search behind doors, straw, a wheelbarrow and other objects in **three different locations**. Find three animals in each place and complete a picture checklist.
+- **Explore the Farm:** Discover real sounds for nine animal types and four types of farm vehicle. Tap to feed chickens, brush a pony or scoop with the digger. This is an open-ended activity, not another quiz.
+- **Guess the Farm Sound:** Still presents exactly three pictures, now including more animal and machinery sounds.
+- **UI fixes:** The home title no longer overlays itself; the tractor illustration is smaller and behind the two boys, so their faces are more visible. Reusable wooden boards, meadow backdrops and large touch controls.
+- **Age modes:** Sam has an easy tap-to-place alternative. Seb can use drag-and-drop and multi-step jobs. Counting still progresses only from **1 to 5**.
+- **Audio:** More real animal field recordings are bundled. Combine, digger and loader activities use recorded *engine* sounds, but these particular clips are not guaranteed to be the exact machine model shown. See [SOUND_CREDITS.md](SOUND_CREDITS.md).
+
+This is a self-contained offline Android build. It does **not** yet use the detailed, photorealistic character renders from the promotional mockups; the boys remain illustrated SVG cartoons for reliable in-game animation.
+
 ## Get the Android app
 
 1. Open **Actions** in this repository and select **Build Android APK**.

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - .github/workflows/import-farm-audio.yml
+      - scripts/import-farm-audio.sh
   workflow_dispatch:
 
 permissions:

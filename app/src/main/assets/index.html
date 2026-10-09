@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#7bd6ff">
+  <meta name="description" content="An offline farming adventure for Seb and Sam.">
+  <title>Seb & Sam's Tractor Farm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="app">
+  <div class="sky-cloud cloud-one"></div><div class="sky-cloud cloud-two"></div>
+  <div class="sun" aria-hidden="true">☀️</div>
+  <header class="topbar">
+    <button id="homeBtn" class="round-btn back-btn" aria-label="Back to farm" hidden>⌂</button>
+    <div class="brand"><span>🌾</span> Seb & Sam's <span>🚜</span></div>
+    <div class="sound-controls">
+      <button id="soundBtn" class="round-btn" aria-label="Toggle sound effects" aria-pressed="true">🔊</button>
+      <button id="musicBtn" class="round-btn" aria-label="Toggle background music" aria-pressed="true">🎵</button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="farm-footer" aria-hidden="true">🌼 🌱 🌻 🐞 🌱 🌼</footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+</div>
+<template id="tractorTemplate">
+<svg viewBox="0 0 770 345" class="hero-art" role="img" aria-label="Cartoon Seb and Sam riding together on their tractor at the farm">
+  <defs>
+    <linearGradient id="redPaint" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ff6461"/><stop offset=".5" stop-color="#f32925"/><stop offset="1" stop-color="#bb1414"/></linearGradient>
+    <linearGradient id="glass" x1="0" x2="1"><stop stop-color="#a4eeff"/><stop offset="1" stop-color="#e7ffff"/></linearGradient>
+  </defs>
+  <g class="windmill" transform="translate(678 70)"><path d="M0 180L15 25L30 180" fill="none" stroke="#bd4742" stroke-width="12"/><circle cx="15" cy="26" r="14" fill="#e4e4e4"/><path d="M15 26L-20 0L-14 -11L15 26L30 -20L41 -14L15 26L55 49L47 60L15 26L1 69L-11 64Z" fill="#ff7667"/></g>
+  <g transform="translate(23 106)">
+    <path d="M0 108V30L61 -13L124 30V108" fill="#fa5553" stroke="#fff4e0" stroke-width="8"/>
+    <path d="M-7 31L62 -24L132 31" fill="none" stroke="#a7372c" stroke-width="18" stroke-linejoin="round"/>
+    <path d="M45 110V46H83V110" fill="#ab3e27" stroke="#fff6e1" stroke-width="7"/><path d="M45 48L82 108M82 48L45 108" stroke="#fff6e1" stroke-width="5"/>
+  </g>
+  <g transform="translate(575 201)"><circle cx="0" cy="18" r="48" fill="#ffefab"/><text x="0" y="38" text-anchor="middle" font-size="74">🐑</text></g>
+  <g class="boy seb-boy" transform="translate(264 40)">
+    <path d="M23 159Q77 137 121 161L133 229H16Z" fill="#cd744a"/>
+    <path d="M49 151V215M95 151V215" stroke="#7bb6e9" stroke-width="20"/><path d="M38 182Q77 203 109 181" fill="none" stroke="#7bb6e9" stroke-width="24"/>
+    <circle cx="73" cy="83" r="70" fill="#ffceb0"/><ellipse cx="8" cy="94" rx="12" ry="22" fill="#ffc5a0"/><ellipse cx="137" cy="94" rx="12" ry="22" fill="#ffc5a0"/>
+    <path d="M4 78Q-1 3 68 7Q122 -2 143 62Q115 38 97 41Q67 55 49 38Q19 71 4 78Z" fill="#c69a52"/>
+    <path d="M26 41Q62 -1 94 21Q50 22 25 63" fill="#e7bd71" opacity=".78"/>
+    <ellipse cx="45" cy="91" rx="6" ry="9" fill="#3c6484"/><ellipse cx="100" cy="91" rx="6" ry="9" fill="#3c6484"/>
+    <circle cx="39" cy="112" r="9" fill="#f59e96" opacity=".5"/><circle cx="108" cy="112" r="9" fill="#f59e96" opacity=".5"/>
+    <path d="M49 123Q72 148 99 123Z" fill="#fff" stroke="#ab5d4a" stroke-width="3"/>
+  </g>
+  <g class="boy sam-boy" transform="translate(408 75)">
+    <path d="M11 135Q68 107 115 137L127 207H5Z" fill="#f4e2cb"/>
+    <path d="M36 139V200M94 137V200" stroke="#72a9d7" stroke-width="18"/><path d="M36 178Q64 196 96 176" fill="none" stroke="#72a9d7" stroke-width="20"/>
+    <circle cx="66" cy="65" r="59" fill="#ffdbc4"/>
+    <path d="M8 48Q10 -3 69 1Q119 -6 124 49Q100 33 92 22Q59 40 34 22Q19 54 8 48" fill="#f9dfa0"/>
+    <path d="M18 28Q63 -4 104 17" fill="none" stroke="#fff1bf" stroke-width="8"/>
+    <ellipse cx="43" cy="71" rx="5.5" ry="8" fill="#5582a6"/><ellipse cx="85" cy="71" rx="5.5" ry="8" fill="#5582a6"/>
+    <circle cx="27" cy="91" r="8" fill="#f5a29b" opacity=".56"/><circle cx="102" cy="91" r="8" fill="#f5a29b" opacity=".56"/>
+    <path d="M43 95Q66 114 87 95" stroke="#9d564b" stroke-width="4" fill="#fff" stroke-linecap="round"/>
+    <path d="M111 153L147 103" stroke="#f1d7ba" stroke-width="22" stroke-linecap="round"/>
+    <circle cx="151" cy="93" r="19" fill="#ffdbc4"/><path d="M146 80L139 66M155 79L157 65M167 89L178 82" stroke="#ffdbc4" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <g class="tractor-svg" transform="translate(133 175)">
+    <path d="M195 75L211 2H355L392 83" fill="#d41c22" stroke="#86232a" stroke-width="9"/>
+    <path d="M225 12H339L357 68H211Z" fill="url(#glass)" stroke="#fff9ee" stroke-width="7"/>
+    <path d="M15 85H400Q436 86 442 125V164H-16V131Z" fill="url(#redPaint)" stroke="#a70d13" stroke-width="9"/>
+    <path d="M37 88V27Q37 10 57 10H195Q218 15 218 53V114H37Z" fill="url(#redPaint)" stroke="#9d1e16" stroke-width="8"/>
+    <path d="M110 12V-50H126V13" fill="#343c43" stroke="#131d23" stroke-width="6"/>
+    <rect x="6" y="118" width="444" height="22" rx="11" fill="#ffb64f"/>
+    <rect x="42" y="82" width="95" height="55" rx="12" fill="#383d49"/><path d="M56 89V130M77 89V130M98 89V130M119 89V130" stroke="#999fab" stroke-width="5"/>
+    <circle cx="12" cy="146" r="72" fill="#313640" stroke="#191a1b" stroke-width="10"/><circle cx="12" cy="146" r="41" fill="#eec12d" stroke="#f9e17d" stroke-width="9"/><circle cx="12" cy="146" r="20" fill="#a1a1a1"/>
+    <circle cx="351" cy="149" r="93" fill="#313640" stroke="#191a1b" stroke-width="12"/><circle cx="351" cy="149" r="52" fill="#f7cb37" stroke="#fce07d" stroke-width="10"/><circle cx="351" cy="149" r="24" fill="#b3b1b1"/>
+    <circle cx="150" cy="100" r="21" fill="#ffe89a" stroke="#f4a523" stroke-width="7"/>
+    <path d="M245 66Q282 39 305 65" stroke="#24272e" stroke-width="13" fill="none"/>
+  </g>
+  <text x="697" y="293" font-size="54">🌻</text><text x="90" y="298" font-size="48">🐔</text>
+</svg>
+</template>
+<script src="game.js"></script>
+</body>
+</html>

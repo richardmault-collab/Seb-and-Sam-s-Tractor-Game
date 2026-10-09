@@ -32,6 +32,8 @@ jobs:
           gradle-version: '8.9'
       - name: Validate JavaScript syntax
         run: node --check app/src/main/assets/game.js
+      - name: Exercise gameplay and counting limit
+        run: node tests/smoke.cjs
       - name: Verify bundled offline assets
         run: |
           test -f app/src/main/assets/index.html

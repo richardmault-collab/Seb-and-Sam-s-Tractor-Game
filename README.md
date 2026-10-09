@@ -2,7 +2,9 @@
 
 An offline, ad-free Android farming game made for Seb (3) and Sam (1), with animated cartoon characters inspired by their photo.
 
-**Play**: Animal taps and sounds, a tractor drive, barn peekaboo, counting sheep from 1 to 5, matching coloured tractors, planting seeds, and delivering hay.
+**Play**: Animal taps and sounds, **Guess the Farm Sound** (hear a cow, sheep, pig, chicken or tractor, then choose from exactly three pictures), a tractor drive, barn peekaboo, counting sheep from 1 to 5, matching coloured tractors, planting seeds, and delivering hay.
+
+**Guess the Farm Sound** works in both Sam and Seb modes. Tap the big speaker as often as you like, choose one of three pictures, and get positive encouragement. Correct answers celebrate and unlock another sound; wrong answers gently encourage trying again. The background music pauses during this listening game. Turn on sound effects (🔊) in the top bar to hear the sounds.
 
 ## Get the Android app
 

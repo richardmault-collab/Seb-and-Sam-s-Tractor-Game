@@ -25,6 +25,19 @@ get cow_2 "275154__bird_man__moo.wav"
 get sheep_2 "710298__michaelperfect__sheep-baaing-3-norwegian-sheep-expressing-itself-concisely.wav"
 get pig_2 "442904__qubodup__pig-squeak.wav"
 get chicken_2 "435508__benjaminnelan__rooster-crow-1.wav"
+get horse "269571__shadowisp__horse-neigh-shortened.wav"
+get horse_2 "184503__madklown__horse.wav"
+get duck "607226__d4xx__ducks_a.wav"
+get duck_2 "732999__bjelicvuk__quack.wav"
+get goat "675417__craigsmith__s01-31_single-goat-calling-out.wav"
+get goat_2 "188182__erokia__goat-sound-2.wav"
+get dog "277058__kwahmah_02__single-dog-bark.wav"
+get dog_2 "464406__michael_grinnell__dog_bark_2.wav"
+get cat "156643__yoyodaman234__catmeow1.wav"
+get cat_2 "686775__nathan-osman__meow-1.wav"
+get combine "264864__augustsandberg__marine-diesel-engine.wav"
+get digger "458461__prometheus888__carengine.wav"
+get loader "325809__soundjoao__motor-loop-3.wav"
 
 echo "Downloading genuine tractor recording from Wikimedia Commons..."
 TRACTOR_FILE="WWS_TractorUrsusC328driving.ogg"
@@ -60,9 +73,22 @@ encode sheep_2 0 1.25 wav
 encode pig_2 0 1.10 wav
 encode chicken_2 0 1.30 wav
 encode tractor_2 13 3.80 ogg
+encode horse 0 1.80 wav
+encode horse_2 0 1.65 wav
+encode duck 0 1.40 wav
+encode duck_2 0 1.40 wav
+encode goat 0 1.55 wav
+encode goat_2 0 1.60 wav
+encode dog 0 1.10 wav
+encode dog_2 0 1.25 wav
+encode cat 0 1.35 wav
+encode cat_2 0 1.30 wav
+encode combine 0 2.65 wav
+encode digger 0 2.80 wav
+encode loader 0 2.75 wav
 
 for f in app/src/main/assets/sounds/*.ogg; do
   ffprobe -v error "$f" >/dev/null
   test "$(stat -c%s "$f")" -gt 500
 done
-echo "All fourteen real farm clips are bundled and decodable."
+echo "Farm audio clips bundled and decodable."

@@ -87,3 +87,6 @@
 @keyframes v14-driveout{to{transform:translateX(83%)}}
 @media(max-width:390px){.v14-drop-target{min-height:89px}.v14-cover{min-height:113px}.v14-cover>span{height:62px;font-size:42px}.v14-hay-route{height:140px}.v14-hint{font-size:14px}.v14-job{min-height:91px}.hero-wrap{max-height:180px}.hero-art{max-height:155px}}
 @media(prefers-reduced-motion:reduce){.v14-driving,.v14-tractor-trailer,.v14-gate{transition:none}.v14-beacon.lit{animation:none}}
+
+.v14-care-row{display:flex;justify-content:center;margin:13px auto 2px}.v14-care-button{min-height:65px;padding:12px 24px;border-radius:22px;background:linear-gradient(#fff2a2,#f7b957);border:5px solid #fff6d6;box-shadow:0 5px 0 #b87e32;font-weight:1000;font-size:clamp(18px,4vw,23px);color:#603922}.v14-care-button.dancing{animation:happy-jump .7s}
+.farm-large-emoji{font-size:clamp(56px,14vw,90px);line-height:1.1}
